@@ -65,7 +65,7 @@ function Home() {
 
   const rootClass = useMemo(
     () =>
-      "relative min-h-[max(884px,100dvh)] bg-[#F9FAFB] text-[#374151] transition-colors duration-300 antialiased pb-20",
+      "relative min-h-[max(884px,100dvh)] bg-[#F9FAFB] text-[#374151] transition-colors duration-300 antialiased pb-24",
     [],
   );
 
