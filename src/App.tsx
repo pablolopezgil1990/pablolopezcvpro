@@ -1124,6 +1124,30 @@ const PROJECTS: ProjectCase[] = [
     Icon: Braces,
   },
   {
+    slug: "power-bi-reingenieria-ranking",
+    stackSlug: "power-bi",
+    title: "Power BI · Reingeniería de Modelo para Análisis Comparativo",
+    subtitle: "Reingeniería de Modelo para Análisis Comparativo",
+    summary:
+      "Transformar una estructura de datos plana e inflexible en un modelo dinámico y escalable que permita la comparación multivariante de indicadores universitarios.",
+    tags: ["Visualización de Datos", "Modelado", "ETL", "BI"],
+    context:
+      "La base de datos original del Ranking de la Fundación CYD presentaba una estructura horizontal donde cada magnitud (tasa de graduación, publicaciones, etc.) ocupaba una columna distinta. Esta arquitectura impedía al usuario final alternar entre indicadores de forma ágil, obligaba a crear visualizaciones estáticas para cada métrica y hacía imposible realizar comparativas dinámicas entre universidades bajo un mismo marco de referencia.",
+    approach: [
+      "Dinamización de Jerarquías (Unpivot): Reestructuración profunda del dataset mediante Power Query, transponiendo las columnas de magnitudes en un modelo de pares \"Atributo-Valor\". Esto permitió centralizar cientos de métricas en una sola dimensión filtrable.",
+      "Contextualización Estadística: Implementación de medidas DAX para calcular los valores máximos y mínimos del promedio global de la base de datos.",
+      "Diseño de Referencias Visuales: Integración en los gráficos de un margen superior e inferior sutil que actúa como \"bandas de referencia\". Esto permite que, al filtrar un grupo de universidades, se visualice inmediatamente su posición relativa respecto a los extremos de todo el ecosistema universitario.",
+      "Optimización de UX: Consolidación de múltiples páginas de informe en un único dashboard interactivo donde la selección de la magnitud redefine toda la lógica visual.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Agilidad Analítica: Reducción radical de la complejidad para el usuario, permitiendo visualizar la evolución histórica de cualquier indicador con un solo clic.",
+      "Contexto Inmediato: Mejora en la interpretación de los datos; ya no solo se observa el valor de una universidad, sino que se comprende su desempeño en comparación con el rango total (máximos y mínimos) del mercado.",
+      "Escalabilidad del Modelo: La nueva estructura permite añadir futuras ediciones del ranking o nuevas métricas sin necesidad de rediseñar los gráficos o modificar la arquitectura del informe.",
+    ],
+    Icon: FileBarChart2,
+  },
+  {
     slug: "power-bi-marketplace",
     stackSlug: "power-bi",
     title: "Power BI · Dashboard Global de Ventas Marketplace",
