@@ -1194,6 +1194,24 @@ const PROJECTS: ProjectCase[] = [
     ],
     Icon: LineChart,
   },
+];
+
+const PROJECTS_BY_SLUG: Record<string, ProjectCase> = PROJECTS.reduce(
+  (acc, p) => {
+    acc[p.slug] = p;
+    return acc;
+  },
+  {} as Record<string, ProjectCase>,
+);uste: Validación de la significatividad conjunta e individual de los parámetros y evaluación del ajuste del modelo.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Detección de Discriminación: Se cuantificó la diferencia porcentual exacta de salario entre hombres y mujeres ceteris paribus (manteniendo constantes educación y experiencia).",
+      "Simulación de Escenarios: Capacidad de predecir cómo cae la probabilidad de participación laboral al pasar de 0 a 1 hijo, o de 1 a 2 hijos menores, aportando datos duros para políticas de conciliación.",
+      "Rigor Matemático: Transición de estimaciones sesgadas a modelos robustos (MCP y Máxima Verosimilitud) para corregir problemas de heterocedasticidad inherentes a los datos de encuestas.",
+    ],
+    Icon: LineChart,
+  },
 ];uste: Validación de la significatividad conjunta e individual de los parámetros y evaluación del ajuste del modelo.",
     ],
     impactIntro: "",
