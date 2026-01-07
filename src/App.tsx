@@ -1026,6 +1026,31 @@ function StackTecnologico({
 
 const PROJECTS: ProjectCase[] = [
   {
+    slug: "excel-consultoria-clima-laboral",
+    stackSlug: "excel",
+    title: "Excel · Consultoría Analítica · Auditoría de Clima Laboral (Adecco)",
+    subtitle: "Consultoría Analítica · Auditoría de Clima Laboral (Adecco)",
+    summary:
+      "Transformar las percepciones de los empleados de grandes cuentas en indicadores accionables, mediante el análisis híbrido (cuantitativo/cualitativo) de encuestas de clima.",
+    tags: ["People Analytics", "Análisis de Sentimiento", "Consultoría Estratégica"],
+    context:
+      "Como consultor autónomo para Adecco, procesaba grandes volúmenes de datos provenientes de encuestas. La información era masiva y heterogénea, combinando métricas numéricas con preguntas de respuesta abiertas. El objetivo final era entregar una hoja de ruta clara a la dirección de las empresas cliente para mejorar la retención de talento y la satisfacción interna.",
+    approach: [
+      "Estandarización de Procesos: Diseño de un ecosistema de plantillas vinculadas (Excel-Word) que permitió automatizar la transición desde los datos brutos hasta la estructura del informe final, reduciendo los tiempos de entrega y asegurando la coherencia visual y técnica.",
+      "Segmentación Multivariable Avanzada: Implementación de una matriz de tabulación para cruzar dimensiones clave: Antigüedad, Departamento, Sección y Tipo de jornada (Presencial/Otros), permitiendo granularidad total en el análisis.",
+      "Análisis Cuantitativo de Indicadores: Evaluación de bloques críticos de RR.HH. como: Liderazgo, Desarrollo y Promoción, Identidad y Compromiso, Organización, y Recursos y Tecnología.",
+      "Análisis Cualitativo y de Sentimiento: Procesamiento de respuestas abiertas mediante la clasificación de sentimientos y detección de patrones de palabras clave (frecuencia de conceptos) para identificar preocupaciones específicas no numéricas (ej. ergonomía, turnos, trato humano).",
+      "Diagnóstico Estratégico: Elaboración de informes ejecutivos que traducían los datos en \"Áreas Fuertes\" (para potenciar como marca empleadora) y \"Áreas de Mejora\" (con recomendaciones tácticas inmediatas).",
+    ],
+    impactIntro: "",
+    impact: [
+      "Eficiencia Operativa: La estandarización mediante plantillas avanzadas permitió escalar la capacidad de análisis, manejando plantillas de grandes empresas con mayor agilidad.",
+      "Insights Profundos: El análisis cualitativo permitió dar \"voz\" a los empleados, aportando matices que los números por sí solos no mostraban (ej. problemas específicos de comunicación en departamentos clave).",
+      "Soporte a la Toma de Decisiones: Los informes sirvieron como base directa para que los departamentos de RR.HH. de los clientes finales implementaran planes de acción específicos, mejorando los KPIs de clima laboral en mediciones posteriores.",
+    ],
+    Icon: FileSpreadsheet,
+  },
+  {
     slug: "excel-control-entrada",
     stackSlug: "excel",
     title: "Excel · Control de entrada y estandarización para mejorar la calidad del dato",
@@ -1101,6 +1126,29 @@ const PROJECTS: ProjectCase[] = [
     Icon: GitBranch,
   },
   {
+    slug: "python-web-scraping-competencia",
+    stackSlug: "python",
+    title: "Python · Automatización de Inteligencia Competitiva (Web Scraping)",
+    subtitle: "Automatización de Inteligencia Competitiva (Web Scraping)",
+    summary:
+      "Monitorizar dinámicamente el posicionamiento de mercado mediante la extracción automatizada de precios y catálogos de la competencia.",
+    tags: ["Web Scraping", "Pricing", "Market Intelligence", "Python Automation"],
+    context:
+      "En un entorno de mercado altamente volátil, el seguimiento de los precios de la competencia se realizaba de forma manual, lo que resultaba en una visión fragmentada, desactualizada y propensa a errores. El reto consistía en obtener datos en tiempo real de múltiples portales web externos para permitir una estrategia de precios (pricing) reactiva y basada en evidencias, sin depender de la descarga manual de catálogos.",
+    approach: [
+      "Arquitectura de Extracción: Desarrollo de scripts en Python utilizando librerías como BeautifulSoup o Selenium para navegar y parsear el contenido HTML de diversos sitios web de la competencia.",
+      "Normalización de Datos Externos: Implementación de lógica de limpieza de strings y regex para extraer valores numéricos y nombres de productos, convirtiendo datos no estructurados en una base de datos tabular limpia.",
+      "Pipeline de Actualización: Automatización del proceso para que la recogida de datos se ejecute de forma recurrente, permitiendo construir un histórico de fluctuaciones de precios.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Agilidad Comercial: Reducción del tiempo de detección de cambios de precio de la competencia de días (revisión manual) a pocos minutos (ejecución de script).",
+      "Precisión Estratégica: Eliminación de errores de transcripción manual, garantizando que las decisiones de precios de la empresa se basen en datos veraces y capturados directamente de la fuente.",
+      "Ventaja Competitiva: Capacidad para identificar tendencias de descuentos y promociones de terceros de forma proactiva, permitiendo al departamento ajustar su oferta de manera casi instantánea.",
+    ],
+    Icon: Braces,
+  },
+  {
     slug: "python-encuestas-reporting",
     stackSlug: "python",
     title: "Python · Automatización de reporting masivo para encuestas",
@@ -1169,6 +1217,55 @@ const PROJECTS: ProjectCase[] = [
       "Eficiencia Financiera: Unificación de métricas considerando distintos tipos de cambio, garantizando que el análisis de márgenes sea preciso y comparable.",
     ],
     Icon: FileBarChart2,
+  },
+  {
+    slug: "sql-especializacion-postgresql",
+    stackSlug: "sql",
+    title: "SQL · PostgreSQL Data Analysis & Database Design",
+    subtitle: "PostgreSQL Data Analysis & Database Design",
+    summary:
+      "Especialización técnica en SQL para interactuar directamente con bases de datos corporativas, realizar consultas complejas y estructurar datos de manera eficiente para análisis avanzado.",
+    tags: ["PostgreSQL", "Data Analysis", "Database Design"],
+    context:
+      "Para potenciar la capacidad de análisis y reducir la dependencia de procesos manuales, completé una trayectoria de especialización técnica enfocada en SQL. El objetivo fue adquirir las competencias necesarias para interactuar directamente con bases de datos corporativas, permitiendo realizar consultas complejas, unir múltiples fuentes de información y estructurar datos de manera eficiente para su posterior análisis.",
+    approach: [
+      "Consultas Avanzadas y Joins: Especialización en la combinación de tablas y el uso de subconsultas para responder preguntas de negocio complejas utilizando múltiples entidades de datos.",
+      "Manipulación y Procesamiento de Datos: Uso de funciones de PostgreSQL para transformar, limpiar y procesar datos directamente desde el motor de la base de datos.",
+      "Estadísticas de Resumen y Window Functions: Implementación de funciones de ventana y agregaciones avanzadas para la creación de informes analíticos y de ingeniería de datos.",
+      "Diseño de Bases de Datos: Aprendizaje de los principios de diseño para organizar y almacenar la información de forma óptima, mejorando el rendimiento y la integridad de los datos.",
+      "Análisis de Impacto Real: Aplicación de las habilidades en proyectos prácticos, como el análisis de datos históricos para ONGs, traduciendo grandes volúmenes de registros en insights accionables.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Autonomía en la Extracción de Datos: Capacidad para consultar directamente el ERP y otras bases de datos sin necesidad de intermediarios técnicos, acelerando la toma de decisiones.",
+      "Eficiencia en el Reporting: Optimización de procesos de reporte mediante el uso de SQL para pre-procesar los datos, reduciendo significativamente la carga de trabajo en herramientas de visualización como Excel o Power BI.",
+      "Calidad y Estructura: Aplicación de mejores prácticas en el diseño y organización de datos, asegurando que la información sea escalable y fácil de auditar.",
+    ],
+    Icon: Database,
+  },
+  {
+    slug: "dynamics-consultoria-migracion",
+    stackSlug: "dynamics",
+    title: "Microsoft Dynamics · Consultoría Funcional y Migración Operativa",
+    subtitle: "Consultoría Funcional y Migración Operativa",
+    summary:
+      "Transformar el repositorio documental de titulaciones en una base de datos relacional dentro del ERP, automatizando la gestión del ciclo de vida académico y el reporte institucional.",
+    tags: ["Gestión de Proyectos", "ERP", "Arquitectura de Datos", "QA"],
+    context:
+      "El departamento de Calidad gestionaba la información crítica para la oficialización de títulos (memorias, plazas, fases administrativas) de forma descentralizada y en formatos no estructurados (PDF). Esta fragmentación impedía la trazabilidad del ciclo de vida de los títulos y convertía las tareas regulares, como el reporte anual de plazas al Ministerio, en procesos manuales lentos, propensos a errores y con nula visibilidad para el resto de la universidad.",
+    approach: [
+      "Parametrización de Información Silenciada: Liderazgo del equipo operativo en la identificación, extracción y estructuración de datos clave contenidos en documentos físicos y digitales para su migración al sistema.",
+      "Modelado Relacional de Negocio: Diseño de la lógica de datos para Dynamics, resolviendo la complejidad de entidades con diferentes granularidades: información estática del título (códigos/nombres) frente a información dinámica y recurrente (plazas anuales, históricos de modificaciones y fases de acreditación).",
+      "Gestión de Requerimientos y QA: Coordinación directa con el departamento técnico (IT) para la definición de flujos de trabajo y ejecución de pruebas funcionales por fases (UAT), asegurando que la arquitectura del ERP respondiera a las necesidades de usuario.",
+      "Democratización del Dato: Centralización de la información en el ERP, permitiendo que cualquier departamento de la universidad consulte de forma más amigable y en tiempo real el estado y los atributos de las titulaciones.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Optimización del Reporte Institucional: Reducción drástica en los tiempos de respuesta para informes recurrentes (como el reporte anual de plazas al Ministerio) gracias a la extracción directa desde el ERP.",
+      "Integridad y Trazabilidad: Eliminación de los silos de información en PDF, garantizando una \"fuente única de verdad\" para todo el ciclo de vida de las titulaciones oficiales.",
+      "Capacidad Analítica: Preparación de la infraestructura de datos necesaria para la explotación posterior mediante Dashboards de gestión, permitiendo la monitorización integral del departamento desde la base de datos corporativa.",
+    ],
+    Icon: Boxes,
   },
   {
     slug: "stata-sns-pca",
