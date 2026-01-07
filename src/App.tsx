@@ -27,7 +27,6 @@ import {
   Target,
   Users,
   Clock,
-  TrendingDown,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import {
@@ -740,11 +739,6 @@ type ProjectCase = {
     label: string;
     color?: string;
   }>;
-  metrics?: Array<{
-    value: string;
-    label: string;
-    trend?: "up" | "down";
-  }>;
 };
 
 function Card({ children }: { children: React.ReactNode }) {
@@ -944,29 +938,6 @@ function CasosReales({
                     </div>
                   )}
 
-                  {c.metrics && c.metrics.length > 0 && (
-                    <div className="flex flex-wrap gap-3 mt-3 pt-3 border-t border-gray-100">
-                      {c.metrics.map((metric, idx) => (
-                        <div key={idx} className="flex items-center gap-1.5">
-                          {metric.trend === "down" && (
-                            <TrendingDown className="h-4 w-4 text-green-600" />
-                          )}
-                          {metric.trend === "up" && (
-                            <TrendingUp className="h-4 w-4 text-blue-600" />
-                          )}
-                          <div className="flex flex-col">
-                            <span className="text-lg font-bold" style={{ color: primary }}>
-                              {metric.value}
-                            </span>
-                            <span className="text-[10px] text-gray-500 leading-tight">
-                              {metric.label}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
                   <p className="text-sm text-gray-600 mt-2 leading-relaxed">{c.summary}</p>
 
                   {c.tags?.length ? (
@@ -1121,10 +1092,6 @@ const PROJECTS: ProjectCase[] = [
       { icon: "target", label: "Consultoría" },
       { icon: "chart", label: "Análisis Híbrido" }
     ],
-    metrics: [
-      { value: "↑30%", label: "Capacidad análisis", trend: "up" },
-      { value: "Grandes", label: "cuentas", trend: "up" }
-    ],
     context:
       "Como consultor autónomo para Adecco, procesaba grandes volúmenes de datos provenientes de encuestas. La información era masiva y heterogénea, combinando métricas numéricas con preguntas de respuesta abiertas. El objetivo final era entregar una hoja de ruta clara a la dirección de las empresas cliente para mejorar la retención de talento y la satisfacción interna.",
     approach: [
@@ -1153,10 +1120,6 @@ const PROJECTS: ProjectCase[] = [
     impactBadges: [
       { icon: "zap", label: "Automatización" },
       { icon: "target", label: "Calidad de Datos" }
-    ],
-    metrics: [
-      { value: "↓80%", label: "Tiempo registro", trend: "down" },
-      { value: "100%", label: "Datos uniformes" }
     ],
     context:
       "En el departamento de Postventa, la ausencia de un método normalizado para registrar incidencias telefónicas generaba un conjunto de datos caótico. Al no existir restricciones en la entrada, la información era heterogénea, difícil de tabular y presentaba serias lagunas de integridad, lo que impedía cualquier análisis posterior fiable.",
@@ -1188,11 +1151,6 @@ const PROJECTS: ProjectCase[] = [
       { icon: "clock", label: "6 años unificados" },
       { icon: "zap", label: "Automatización" }
     ],
-    metrics: [
-      { value: "39K", label: "Registros", trend: "up" },
-      { value: "70", label: "Columnas unificadas" },
-      { value: "6", label: "Años históricos" }
-    ],
     context:
       "El departamento gestionaba la información del profesorado en archivos de Excel anuales con estructuras inconsistentes. A lo largo de los años, los nombres de las columnas, los tipos de datos y los criterios de registro variaron (por ejemplo, \"faculty\" frente a \"area_viu\"), lo que fragmentaba la información e impedía realizar análisis históricos de tendencias o evolución de la plantilla docente.",
     approach: [
@@ -1222,11 +1180,6 @@ const PROJECTS: ProjectCase[] = [
       { icon: "zap", label: "Automatización" },
       { icon: "chart", label: "Modelo estrella" },
       { icon: "fire", label: "Miles de registros" }
-    ],
-    metrics: [
-      { value: "Miles", label: "Registros procesados" },
-      { value: "Instant.", label: "Actualización" },
-      { value: "100%", label: "Coherencia datos" }
     ],
     context:
       "Anualmente, la institución debe reportar a la Agencia de Calidad métricas críticas, como el porcentaje de doctores por titulación. La gestión es extremadamente compleja debido al volumen de datos: la intersección de todas las asignaturas impartidas en la universidad con las fichas individuales de cada docente. El proceso manual es susceptible de errores de conteo y conjuntamente difícil de abarcar.",
@@ -1258,10 +1211,6 @@ const PROJECTS: ProjectCase[] = [
       { icon: "zap", label: "Automatización" },
       { icon: "target", label: "Market Intelligence" }
     ],
-    metrics: [
-      { value: "↓95%", label: "Tiempo detección", trend: "down" },
-      { value: "0", label: "Errores manuales", trend: "down" }
-    ],
     context:
       "En un entorno de mercado altamente volátil, el seguimiento de los precios de la competencia se realizaba de forma manual, lo que resultaba en una visión fragmentada, desactualizada y propensa a errores. El reto consistía en obtener datos en tiempo real de múltiples portales web externos para permitir una estrategia de precios (pricing) reactiva y basada en evidencias, sin depender de la descarga manual de catálogos.",
     approach: [
@@ -1290,11 +1239,6 @@ const PROJECTS: ProjectCase[] = [
       { icon: "fire", label: "+100 informes" },
       { icon: "zap", label: "Automatización" }
     ],
-    metrics: [
-      { value: "+100", label: "Informes generados", trend: "up" },
-      { value: "6", label: "Cursos analizados" },
-      { value: "↓90%", label: "Tiempo proceso", trend: "down" }
-    ],
     context:
       "La gestión de encuestas de satisfacción para la acreditación de títulos requería reportar los últimos seis cursos académicos. El volumen de los archivos CSV superaba la capacidad de procesamiento de las herramientas de hoja de cálculo tradicionales, y la heterogeneidad de los datos (cambios en el orden y número de preguntas según el año) imposibilitaba una consolidación manual eficiente.",
     approach: [
@@ -1322,10 +1266,6 @@ const PROJECTS: ProjectCase[] = [
       { icon: "fire", label: "Alto impacto" },
       { icon: "chart", label: "Modelo dinámico" },
       { icon: "target", label: "UX mejorada" }
-    ],
-    metrics: [
-      { value: "1 clic", label: "Cambio indicador" },
-      { value: "↑80%", label: "Agilidad análisis", trend: "up" }
     ],
     context:
       "La base de datos original del Ranking de la Fundación CYD presentaba una estructura horizontal donde cada magnitud (tasa de graduación, publicaciones, etc.) ocupaba una columna distinta. Esta arquitectura impedía al usuario final alternar entre indicadores de forma ágil, obligaba a crear visualizaciones estáticas para cada métrica y hacía imposible realizar comparativas dinámicas entre universidades bajo un mismo marco de referencia.",
@@ -1356,11 +1296,6 @@ const PROJECTS: ProjectCase[] = [
       { icon: "fire", label: "Tiempo real" },
       { icon: "target", label: "Decisiones ágiles" }
     ],
-    metrics: [
-      { value: "5", label: "Países unificados" },
-      { value: "Real-time", label: "Actualización" },
-      { value: "↓70%", label: "Tiempo decisión", trend: "down" }
-    ],
     context:
       "La dispersión de las ventas en plataformas de distintos países (Francia, UK, España, Italia, Holanda) generaba una visión fragmentada del negocio. Cada marketplace operaba con formatos de archivo propios, idiomas locales y diferentes divisas, lo que impedía una comparativa rápida de la rentabilidad global y por canal.",
     approach: [
@@ -1388,10 +1323,6 @@ const PROJECTS: ProjectCase[] = [
       { icon: "target", label: "Especialización" },
       { icon: "chart", label: "Consultas avanzadas" },
       { icon: "zap", label: "Autonomía" }
-    ],
-    metrics: [
-      { value: "100%", label: "Autonomía consultas" },
-      { value: "↓60%", label: "Tiempo reporting", trend: "down" }
     ],
     context:
       "Para potenciar la capacidad de análisis y reducir la dependencia de procesos manuales, completé una trayectoria de especialización técnica enfocada en SQL. El objetivo fue adquirir las competencias necesarias para interactuar directamente con bases de datos corporativas, permitiendo realizar consultas complejas, unir múltiples fuentes de información y estructurar datos de manera eficiente para su posterior análisis.",
@@ -1423,10 +1354,6 @@ const PROJECTS: ProjectCase[] = [
       { icon: "target", label: "ERP Migration" },
       { icon: "users", label: "Consultoría" }
     ],
-    metrics: [
-      { value: "↓85%", label: "Tiempo reporte", trend: "down" },
-      { value: "1", label: "Fuente de verdad única" }
-    ],
     context:
       "El departamento de Calidad gestionaba la información crítica para la oficialización de títulos (memorias, plazas, fases administrativas) de forma descentralizada y en formatos no estructurados (PDF). Esta fragmentación impedía la trazabilidad del ciclo de vida de los títulos y convertía las tareas regulares, como el reporte anual de plazas al Ministerio, en procesos manuales lentos, propensos a errores y con nula visibilidad para el resto de la universidad.",
     approach: [
@@ -1456,10 +1383,6 @@ const PROJECTS: ProjectCase[] = [
       { icon: "target", label: "Benchmarking" },
       { icon: "fire", label: "Cientos de indicadores" }
     ],
-    metrics: [
-      { value: "14", label: "Años analizados" },
-      { value: "17", label: "CC.AA. comparadas" }
-    ],
     context:
       "El análisis del Sistema Nacional de Salud implicaba manejar una base de datos heterogénea con múltiples dimensiones: recursos estructurales (camas, alta tecnología), gasto per cápita, calidad percibida (satisfacción) y resultados de salud (esperanza de vida, reingresos). La alta dimensionalidad y la correlación entre variables hacían imposible una comparativa directa y limpia entre regiones a través de simples tablas de Excel.",
     approach: [
@@ -1488,10 +1411,6 @@ const PROJECTS: ProjectCase[] = [
       { icon: "chart", label: "Econometría" },
       { icon: "target", label: "Modelos predictivos" },
       { icon: "users", label: "People Analytics" }
-    ],
-    metrics: [
-      { value: "Preciso", label: "Brecha salarial cuantificada" },
-      { value: "Logit", label: "Modelo robusto" }
     ],
     context:
       "Se disponía de datasets socioeconómicos con información sobre salarios, educación, género y composición familiar. El reto era doble: (1) identificar si existía discriminación salarial estadística hacia la mujer; (2) predecir la probabilidad de que una persona decida trabajar o no basándose en su entorno familiar (hijos, otros ingresos), superando las limitaciones de los modelos lineales clásicos.",
