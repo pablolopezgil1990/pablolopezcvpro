@@ -34,14 +34,6 @@ import {
   Navigate,
 } from "react-router-dom";
 
-/**
- * App CV + Stack + Casos reales (v2)
- * --------------------------------
- * Rutas:
- *   /                   (home)
- *   /proyectos/:slug    (ficha del caso)
- */
-
 export default function App() {
   return (
     <BrowserRouter>
@@ -65,7 +57,7 @@ function Home() {
 
   const rootClass = useMemo(
     () =>
-      "relative min-h-[max(884px,100dvh)] bg-[#F9FAFB] text-[#374151] transition-colors duration-300 antialiased pb-24",
+      "relative min-h-[100dvh] bg-[#F9FAFB] text-[#374151] transition-colors duration-300 antialiased pb-20",
     [],
   );
 
@@ -270,7 +262,7 @@ function Home() {
             <img
               alt="Foto de perfil profesional de Pablo López Gil"
               className="relative w-32 h-32 object-cover rounded-full border-4 border-[#F9FAFB] shadow-xl"
-              src="/foto-perfil.jpg"
+              src="/profile.jpg"
             />
           </div>
 
@@ -553,20 +545,22 @@ function Home() {
         </AnimatePresence>
       </main>
 
-      <div className="fixed bottom-6 left-0 right-0 px-6 max-w-md mx-auto z-40">
-        <a
-          className="w-full text-white font-bold py-3.5 px-4 rounded-xl shadow-lg flex items-center justify-center gap-2 transition-transform active:scale-95"
-          style={{ backgroundColor: primary }}
-          href={cvPdfUrl}
-          download
-          title="Descargar CV"
-        >
-          <Download className="h-5 w-5" />
-          Descargar CV Completo (PDF)
-        </a>
+      <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
+        <div className="max-w-md mx-auto px-4 pointer-events-auto">
+          <div className="bg-gradient-to-t from-[#F9FAFB] via-[#F9FAFB] to-transparent pt-4 pb-3">
+            <a
+              className="block w-full text-white font-semibold text-sm py-2.5 px-4 rounded-lg shadow-md text-center transition-all active:scale-95 hover:shadow-lg"
+              style={{ backgroundColor: primary }}
+              href={cvPdfUrl}
+              download="Pablo_Lopez_Gil_CV.pdf"
+              title="Descargar CV"
+            >
+              <Download className="h-4 w-4 inline-block mr-2 -mt-0.5" />
+              <span className="whitespace-nowrap">Descargar CV</span>
+            </a>
+          </div>
+        </div>
       </div>
-
-      <nav className="fixed bottom-0 w-full bg-[#F9FAFB] border-t border-gray-200 pb-safe z-30 hidden" />
     </div>
   );
 }
@@ -578,11 +572,10 @@ function ProjectPage() {
 
   const primary = "#6B4C5F";
   const rootClass =
-    "min-h-[max(884px,100dvh)] bg-[#F9FAFB] text-[#374151] transition-colors duration-300 antialiased pb-10";
+    "min-h-[100dvh] bg-[#F9FAFB] text-[#374151] transition-colors duration-300 antialiased pb-10";
 
   const project = slug ? PROJECTS_BY_SLUG[slug] : undefined;
 
-  // Scroll to top cuando se monta el componente
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
@@ -723,8 +716,6 @@ function ProjectPage() {
           </Link>
         </div>
       </main>
-
-      <nav className="fixed bottom-0 w-full bg-[#F9FAFB] border-t border-gray-200 pb-safe z-30 hidden" />
     </div>
   );
 }
