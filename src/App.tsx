@@ -21,6 +21,12 @@ import {
   ExternalLink,
   ArrowLeft,
   FolderKanban,
+  Flame,
+  Zap,
+  BarChart3,
+  Target,
+  Users,
+  Clock,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import {
@@ -728,6 +734,11 @@ type ProjectCase = {
   impactIntro: string;
   impact: string[];
   Icon: React.ComponentType<{ className?: string }>;
+  impactBadges?: Array<{
+    icon: "fire" | "zap" | "chart" | "target" | "users" | "clock";
+    label: string;
+    color?: string;
+  }>;
 };
 
 function Card({ children }: { children: React.ReactNode }) {
@@ -801,6 +812,25 @@ function CasosReales({
     if (!s) return cases;
     return cases.filter((c) => c.stackSlug === s);
   }, [cases, selectedStack]);
+
+  const getBadgeIcon = (icon: string) => {
+    switch (icon) {
+      case "fire":
+        return Flame;
+      case "zap":
+        return Zap;
+      case "chart":
+        return BarChart3;
+      case "target":
+        return Target;
+      case "users":
+        return Users;
+      case "clock":
+        return Clock;
+      default:
+        return Flame;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -883,6 +913,30 @@ function CasosReales({
                       Ver <ExternalLink className="h-3.5 w-3.5" />
                     </Link>
                   </div>
+
+                  {c.impactBadges && c.impactBadges.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      {c.impactBadges.map((badge, idx) => {
+                        const BadgeIcon = getBadgeIcon(badge.icon);
+                        const bgColor = badge.color || "rgba(107, 76, 95, 0.08)";
+                        const textColor = badge.color ? badge.color : primary;
+                        
+                        return (
+                          <div
+                            key={idx}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold"
+                            style={{ 
+                              backgroundColor: bgColor,
+                              color: textColor
+                            }}
+                          >
+                            <BadgeIcon className="h-3 w-3" />
+                            <span>{badge.label}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
 
                   <p className="text-sm text-gray-600 mt-2 leading-relaxed">{c.summary}</p>
 
@@ -1033,6 +1087,11 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Transformar las percepciones de los empleados de grandes cuentas en indicadores accionables, mediante el análisis híbrido (cuantitativo/cualitativo) de encuestas de clima.",
     tags: ["People Analytics", "Análisis de Sentimiento", "Consultoría Estratégica"],
+    impactBadges: [
+      { icon: "users", label: "People Analytics" },
+      { icon: "target", label: "Consultoría" },
+      { icon: "chart", label: "Análisis Híbrido" }
+    ],
     context:
       "Como consultor autónomo para Adecco, procesaba grandes volúmenes de datos provenientes de encuestas. La información era masiva y heterogénea, combinando métricas numéricas con preguntas de respuesta abiertas. El objetivo final era entregar una hoja de ruta clara a la dirección de las empresas cliente para mejorar la retención de talento y la satisfacción interna.",
     approach: [
@@ -1058,6 +1117,10 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Mejorar la calidad del dato mediante el control de la entrada manual, sustituyendo el registro libre por un formulario de captura estructurado.",
     tags: ["VBA", "Formulario", "Reporting"],
+    impactBadges: [
+      { icon: "zap", label: "Automatización" },
+      { icon: "target", label: "Calidad de Datos" }
+    ],
     context:
       "En el departamento de Postventa, la ausencia de un método normalizado para registrar incidencias telefónicas generaba un conjunto de datos caótico. Al no existir restricciones en la entrada, la información era heterogénea, difícil de tabular y presentaba serias lagunas de integridad, lo que impedía cualquier análisis posterior fiable.",
     approach: [
@@ -1083,6 +1146,11 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Unificar seis años de registros de profesorado (2019-2024) en una base de datos única y coherente mediante la normalización de estructuras heterogéneas.",
     tags: ["Reporting", "Estandarización", "Data Engineering"],
+    impactBadges: [
+      { icon: "chart", label: "39K registros" },
+      { icon: "clock", label: "6 años unificados" },
+      { icon: "zap", label: "Automatización" }
+    ],
     context:
       "El departamento gestionaba la información del profesorado en archivos de Excel anuales con estructuras inconsistentes. A lo largo de los años, los nombres de las columnas, los tipos de datos y los criterios de registro variaron (por ejemplo, \"faculty\" frente a \"area_viu\"), lo que fragmentaba la información e impedía realizar análisis históricos de tendencias o evolución de la plantilla docente.",
     approach: [
@@ -1108,6 +1176,11 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Generar un sistema de cálculo masivo y automatizado para ratios de profesorado (como el porcentaje de doctores) mediante la integración de bases de datos relacionales.",
     tags: ["ETL", "Modelado de datos", "Reporting"],
+    impactBadges: [
+      { icon: "zap", label: "Automatización" },
+      { icon: "chart", label: "Modelo estrella" },
+      { icon: "fire", label: "Miles de registros" }
+    ],
     context:
       "Anualmente, la institución debe reportar a la Agencia de Calidad métricas críticas, como el porcentaje de doctores por titulación. La gestión es extremadamente compleja debido al volumen de datos: la intersección de todas las asignaturas impartidas en la universidad con las fichas individuales de cada docente. El proceso manual es susceptible de errores de conteo y conjuntamente difícil de abarcar.",
     approach: [
@@ -1133,6 +1206,11 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Monitorizar dinámicamente el posicionamiento de mercado mediante la extracción automatizada de precios y catálogos de la competencia.",
     tags: ["Web Scraping", "Pricing", "Market Intelligence", "Python Automation"],
+    impactBadges: [
+      { icon: "fire", label: "Tiempo real" },
+      { icon: "zap", label: "Automatización" },
+      { icon: "target", label: "Market Intelligence" }
+    ],
     context:
       "En un entorno de mercado altamente volátil, el seguimiento de los precios de la competencia se realizaba de forma manual, lo que resultaba en una visión fragmentada, desactualizada y propensa a errores. El reto consistía en obtener datos en tiempo real de múltiples portales web externos para permitir una estrategia de precios (pricing) reactiva y basada en evidencias, sin depender de la descarga manual de catálogos.",
     approach: [
@@ -1156,6 +1234,11 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Consolidar bases de datos de gran volumen y automatizar la generación de más de 100 informes individuales de calidad docente.",
     tags: ["Reporte", "Big Data", "Automatización"],
+    impactBadges: [
+      { icon: "chart", label: "Big Data" },
+      { icon: "fire", label: "+100 informes" },
+      { icon: "zap", label: "Automatización" }
+    ],
     context:
       "La gestión de encuestas de satisfacción para la acreditación de títulos requería reportar los últimos seis cursos académicos. El volumen de los archivos CSV superaba la capacidad de procesamiento de las herramientas de hoja de cálculo tradicionales, y la heterogeneidad de los datos (cambios en el orden y número de preguntas según el año) imposibilitaba una consolidación manual eficiente.",
     approach: [
@@ -1179,6 +1262,11 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Transformar una estructura de datos plana e inflexible en un modelo dinámico y escalable que permita la comparación multivariante de indicadores universitarios.",
     tags: ["Visualización de Datos", "Modelado", "ETL", "BI"],
+    impactBadges: [
+      { icon: "fire", label: "Alto impacto" },
+      { icon: "chart", label: "Modelo dinámico" },
+      { icon: "target", label: "UX mejorada" }
+    ],
     context:
       "La base de datos original del Ranking de la Fundación CYD presentaba una estructura horizontal donde cada magnitud (tasa de graduación, publicaciones, etc.) ocupaba una columna distinta. Esta arquitectura impedía al usuario final alternar entre indicadores de forma ágil, obligaba a crear visualizaciones estáticas para cada métrica y hacía imposible realizar comparativas dinámicas entre universidades bajo un mismo marco de referencia.",
     approach: [
@@ -1203,6 +1291,11 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Centralizar y representar las ventas de múltiples marketplaces en un único panel de control integral usable tanto por gerencia como por managers.",
     tags: ["BI", "ETL", "Reporting"],
+    impactBadges: [
+      { icon: "chart", label: "Multi-país" },
+      { icon: "fire", label: "Tiempo real" },
+      { icon: "target", label: "Decisiones ágiles" }
+    ],
     context:
       "La dispersión de las ventas en plataformas de distintos países (Francia, UK, España, Italia, Holanda) generaba una visión fragmentada del negocio. Cada marketplace operaba con formatos de archivo propios, idiomas locales y diferentes divisas, lo que impedía una comparativa rápida de la rentabilidad global y por canal.",
     approach: [
@@ -1226,6 +1319,11 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Especialización técnica en SQL para interactuar directamente con bases de datos corporativas, realizar consultas complejas y estructurar datos de manera eficiente para análisis avanzado.",
     tags: ["PostgreSQL", "Data Analysis", "Database Design"],
+    impactBadges: [
+      { icon: "target", label: "Especialización" },
+      { icon: "chart", label: "Consultas avanzadas" },
+      { icon: "zap", label: "Autonomía" }
+    ],
     context:
       "Para potenciar la capacidad de análisis y reducir la dependencia de procesos manuales, completé una trayectoria de especialización técnica enfocada en SQL. El objetivo fue adquirir las competencias necesarias para interactuar directamente con bases de datos corporativas, permitiendo realizar consultas complejas, unir múltiples fuentes de información y estructurar datos de manera eficiente para su posterior análisis.",
     approach: [
@@ -1251,6 +1349,11 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Transformar el repositorio documental de titulaciones en una base de datos relacional dentro del ERP, automatizando la gestión del ciclo de vida académico y el reporte institucional.",
     tags: ["Gestión de Proyectos", "ERP", "Arquitectura de Datos", "QA"],
+    impactBadges: [
+      { icon: "fire", label: "Alto impacto" },
+      { icon: "target", label: "ERP Migration" },
+      { icon: "users", label: "Consultoría" }
+    ],
     context:
       "El departamento de Calidad gestionaba la información crítica para la oficialización de títulos (memorias, plazas, fases administrativas) de forma descentralizada y en formatos no estructurados (PDF). Esta fragmentación impedía la trazabilidad del ciclo de vida de los títulos y convertía las tareas regulares, como el reporte anual de plazas al Ministerio, en procesos manuales lentos, propensos a errores y con nula visibilidad para el resto de la universidad.",
     approach: [
@@ -1275,6 +1378,11 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Sintetizar la complejidad de cientos de indicadores sanitarios (recursos, costes y resultados) para identificar patrones de gestión y clasificar el desempeño de las Comunidades Autónomas.",
     tags: ["PCA", "Econometría / Estadística", "Data Cleaning"],
+    impactBadges: [
+      { icon: "chart", label: "Análisis multivariante" },
+      { icon: "target", label: "Benchmarking" },
+      { icon: "fire", label: "Cientos de indicadores" }
+    ],
     context:
       "El análisis del Sistema Nacional de Salud implicaba manejar una base de datos heterogénea con múltiples dimensiones: recursos estructurales (camas, alta tecnología), gasto per cápita, calidad percibida (satisfacción) y resultados de salud (esperanza de vida, reingresos). La alta dimensionalidad y la correlación entre variables hacían imposible una comparativa directa y limpia entre regiones a través de simples tablas de Excel.",
     approach: [
@@ -1299,6 +1407,11 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Determinar cuantitativamente los factores que influyen en la brecha salarial y calcular la probabilidad de participación activa en el mercado laboral mediante modelos econométricos avanzados.",
     tags: ["People Analytics", "Modelos de Elección Discreta", "Econometría con R"],
+    impactBadges: [
+      { icon: "chart", label: "Econometría" },
+      { icon: "target", label: "Modelos predictivos" },
+      { icon: "users", label: "People Analytics" }
+    ],
     context:
       "Se disponía de datasets socioeconómicos con información sobre salarios, educación, género y composición familiar. El reto era doble: (1) identificar si existía discriminación salarial estadística hacia la mujer; (2) predecir la probabilidad de que una persona decida trabajar o no basándose en su entorno familiar (hijos, otros ingresos), superando las limitaciones de los modelos lineales clásicos.",
     approach: [
