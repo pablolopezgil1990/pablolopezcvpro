@@ -21,6 +21,13 @@ import {
   ExternalLink,
   ArrowLeft,
   FolderKanban,
+  Flame,
+  Zap,
+  BarChart3,
+  Target,
+  Users,
+  Clock,
+  TrendingDown,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import {
@@ -542,18 +549,6 @@ function Home() {
           )}
         </AnimatePresence>
       </main>
-
-      <a
-        href="https://wa.me/34654033645"
-        target="_blank"
-        rel="noreferrer"
-        className="fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 active:scale-95"
-        style={{ backgroundColor: primary }}
-        aria-label="Contactar por WhatsApp"
-        title="Contactar por WhatsApp"
-      >
-        <FaWhatsapp className="h-6 w-6 text-white" />
-      </a>
     </div>
   );
 }
@@ -740,6 +735,16 @@ type ProjectCase = {
   impactIntro: string;
   impact: string[];
   Icon: React.ComponentType<{ className?: string }>;
+  impactBadges?: Array<{
+    icon: "fire" | "zap" | "chart" | "target" | "users" | "clock";
+    label: string;
+    color?: string;
+  }>;
+  metrics?: Array<{
+    value: string;
+    label: string;
+    trend?: "up" | "down";
+  }>;
 };
 
 function Card({ children }: { children: React.ReactNode }) {
@@ -813,6 +818,25 @@ function CasosReales({
     if (!s) return cases;
     return cases.filter((c) => c.stackSlug === s);
   }, [cases, selectedStack]);
+
+  const getBadgeIcon = (icon: string) => {
+    switch (icon) {
+      case "fire":
+        return Flame;
+      case "zap":
+        return Zap;
+      case "chart":
+        return BarChart3;
+      case "target":
+        return Target;
+      case "users":
+        return Users;
+      case "clock":
+        return Clock;
+      default:
+        return Flame;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -895,6 +919,53 @@ function CasosReales({
                       Ver <ExternalLink className="h-3.5 w-3.5" />
                     </Link>
                   </div>
+
+                  {c.impactBadges && c.impactBadges.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      {c.impactBadges.map((badge, idx) => {
+                        const BadgeIcon = getBadgeIcon(badge.icon);
+                        const bgColor = badge.color || "rgba(107, 76, 95, 0.08)";
+                        const textColor = badge.color ? badge.color : primary;
+                        
+                        return (
+                          <div
+                            key={idx}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold"
+                            style={{ 
+                              backgroundColor: bgColor,
+                              color: textColor
+                            }}
+                          >
+                            <BadgeIcon className="h-3 w-3" />
+                            <span>{badge.label}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {c.metrics && c.metrics.length > 0 && (
+                    <div className="flex flex-wrap gap-3 mt-3 pt-3 border-t border-gray-100">
+                      {c.metrics.map((metric, idx) => (
+                        <div key={idx} className="flex items-center gap-1.5">
+                          {metric.trend === "down" && (
+                            <TrendingDown className="h-4 w-4 text-green-600" />
+                          )}
+                          {metric.trend === "up" && (
+                            <TrendingUp className="h-4 w-4 text-blue-600" />
+                          )}
+                          <div className="flex flex-col">
+                            <span className="text-lg font-bold" style={{ color: primary }}>
+                              {metric.value}
+                            </span>
+                            <span className="text-[10px] text-gray-500 leading-tight">
+                              {metric.label}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
                   <p className="text-sm text-gray-600 mt-2 leading-relaxed">{c.summary}</p>
 
@@ -1045,6 +1116,15 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Transformar las percepciones de los empleados de grandes cuentas en indicadores accionables, mediante el análisis híbrido (cuantitativo/cualitativo) de encuestas de clima.",
     tags: ["People Analytics", "Análisis de Sentimiento", "Consultoría Estratégica"],
+    impactBadges: [
+      { icon: "users", label: "People Analytics" },
+      { icon: "target", label: "Consultoría" },
+      { icon: "chart", label: "Análisis Híbrido" }
+    ],
+    metrics: [
+      { value: "↑30%", label: "Capacidad análisis", trend: "up" },
+      { value: "Grandes", label: "cuentas", trend: "up" }
+    ],
     context:
       "Como consultor autónomo para Adecco, procesaba grandes volúmenes de datos provenientes de encuestas. La información era masiva y heterogénea, combinando métricas numéricas con preguntas de respuesta abiertas. El objetivo final era entregar una hoja de ruta clara a la dirección de las empresas cliente para mejorar la retención de talento y la satisfacción interna.",
     approach: [
@@ -1070,6 +1150,14 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Mejorar la calidad del dato mediante el control de la entrada manual, sustituyendo el registro libre por un formulario de captura estructurado.",
     tags: ["VBA", "Formulario", "Reporting"],
+    impactBadges: [
+      { icon: "zap", label: "Automatización" },
+      { icon: "target", label: "Calidad de Datos" }
+    ],
+    metrics: [
+      { value: "↓80%", label: "Tiempo registro", trend: "down" },
+      { value: "100%", label: "Datos uniformes" }
+    ],
     context:
       "En el departamento de Postventa, la ausencia de un método normalizado para registrar incidencias telefónicas generaba un conjunto de datos caótico. Al no existir restricciones en la entrada, la información era heterogénea, difícil de tabular y presentaba serias lagunas de integridad, lo que impedía cualquier análisis posterior fiable.",
     approach: [
@@ -1095,6 +1183,16 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Unificar seis años de registros de profesorado (2019-2024) en una base de datos única y coherente mediante la normalización de estructuras heterogéneas.",
     tags: ["Reporting", "Estandarización", "Data Engineering"],
+    impactBadges: [
+      { icon: "chart", label: "39K registros" },
+      { icon: "clock", label: "6 años unificados" },
+      { icon: "zap", label: "Automatización" }
+    ],
+    metrics: [
+      { value: "39K", label: "Registros", trend: "up" },
+      { value: "70", label: "Columnas unificadas" },
+      { value: "6", label: "Años históricos" }
+    ],
     context:
       "El departamento gestionaba la información del profesorado en archivos de Excel anuales con estructuras inconsistentes. A lo largo de los años, los nombres de las columnas, los tipos de datos y los criterios de registro variaron (por ejemplo, \"faculty\" frente a \"area_viu\"), lo que fragmentaba la información e impedía realizar análisis históricos de tendencias o evolución de la plantilla docente.",
     approach: [
@@ -1112,6 +1210,42 @@ const PROJECTS: ProjectCase[] = [
     Icon: Braces,
   },
   {
+    slug: "power-query-profesorado",
+    stackSlug: "power-query",
+    title: "Power Query · Modelo de datos para cálculo de profesorado",
+    subtitle:
+      "Sistema automatizado para ratios de profesorado mediante integración de bases de datos relacionales",
+    summary:
+      "Generar un sistema de cálculo masivo y automatizado para ratios de profesorado (como el porcentaje de doctores) mediante la integración de bases de datos relacionales.",
+    tags: ["ETL", "Modelado de datos", "Reporting"],
+    impactBadges: [
+      { icon: "zap", label: "Automatización" },
+      { icon: "chart", label: "Modelo estrella" },
+      { icon: "fire", label: "Miles de registros" }
+    ],
+    metrics: [
+      { value: "Miles", label: "Registros procesados" },
+      { value: "Instant.", label: "Actualización" },
+      { value: "100%", label: "Coherencia datos" }
+    ],
+    context:
+      "Anualmente, la institución debe reportar a la Agencia de Calidad métricas críticas, como el porcentaje de doctores por titulación. La gestión es extremadamente compleja debido al volumen de datos: la intersección de todas las asignaturas impartidas en la universidad con las fichas individuales de cada docente. El proceso manual es susceptible de errores de conteo y conjuntamente difícil de abarcar.",
+    approach: [
+      "Integración de Fuentes (ETL): Conexión directa con el ERP para extraer la información total de las titulaciones y características docentes.",
+      "Limpieza y Transformación: Aplicación de múltiples pasos de limpieza en Power Query para normalizar nombres, formatos y registros. Homogeneización de encabezados y eliminación de duplicados para asegurar JOINS y UNIONS correctos.",
+      "Modelado en Estrella: Diseño de un modelo de datos robusto utilizando al docente como Primary Key. Esta arquitectura permite relacionar las características del profesorado (dimensión) con las asignaciones de asignaturas (hechos).",
+      "Normalización: El modelo garantiza que la información de un docente sea única y coherente en toda la estructura. Además, está ideado para que sea fácilmente actualizable.",
+    ],
+    impactIntro:
+      "La transición de un recuento manual a un modelo de datos relacional no solo ahorra tiempo, sino que eleva el estándar de garantía ante auditorías externas.",
+    impact: [
+      "Cálculo Masivo y Automatizado: Se eliminó el recuento manual. El sistema ahora procesa miles de registros de forma instantánea, permitiendo que el reporte se genere al pulsar \"Actualizar\".",
+      "Integridad del Dato: Al centralizar la información del docente, cualquier corrección en su ficha técnica se propaga automáticamente a todas las titulaciones relacionadas, eliminando correcciones repetidas e individuales y garantizando coherencia total.",
+      "Escalabilidad del Reporting: El output final es una base de datos procesada que permite realizar análisis granulares a tres niveles: por Título, por Facultad o a nivel global de Universidad.",
+    ],
+    Icon: GitBranch,
+  },
+  {
     slug: "python-web-scraping-competencia",
     stackSlug: "python",
     title: "Python · Automatización de Inteligencia Competitiva (Web Scraping)",
@@ -1119,6 +1253,15 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Monitorizar dinámicamente el posicionamiento de mercado mediante la extracción automatizada de precios y catálogos de la competencia.",
     tags: ["Web Scraping", "Pricing", "Market Intelligence", "Python Automation"],
+    impactBadges: [
+      { icon: "fire", label: "Tiempo real" },
+      { icon: "zap", label: "Automatización" },
+      { icon: "target", label: "Market Intelligence" }
+    ],
+    metrics: [
+      { value: "↓95%", label: "Tiempo detección", trend: "down" },
+      { value: "0", label: "Errores manuales", trend: "down" }
+    ],
     context:
       "En un entorno de mercado altamente volátil, el seguimiento de los precios de la competencia se realizaba de forma manual, lo que resultaba en una visión fragmentada, desactualizada y propensa a errores. El reto consistía en obtener datos en tiempo real de múltiples portales web externos para permitir una estrategia de precios (pricing) reactiva y basada en evidencias, sin depender de la descarga manual de catálogos.",
     approach: [
@@ -1142,6 +1285,16 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Consolidar bases de datos de gran volumen y automatizar la generación de más de 100 informes individuales de calidad docente.",
     tags: ["Reporte", "Big Data", "Automatización"],
+    impactBadges: [
+      { icon: "chart", label: "Big Data" },
+      { icon: "fire", label: "+100 informes" },
+      { icon: "zap", label: "Automatización" }
+    ],
+    metrics: [
+      { value: "+100", label: "Informes generados", trend: "up" },
+      { value: "6", label: "Cursos analizados" },
+      { value: "↓90%", label: "Tiempo proceso", trend: "down" }
+    ],
     context:
       "La gestión de encuestas de satisfacción para la acreditación de títulos requería reportar los últimos seis cursos académicos. El volumen de los archivos CSV superaba la capacidad de procesamiento de las herramientas de hoja de cálculo tradicionales, y la heterogeneidad de los datos (cambios en el orden y número de preguntas según el año) imposibilitaba una consolidación manual eficiente.",
     approach: [
@@ -1165,6 +1318,15 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Transformar una estructura de datos plana e inflexible en un modelo dinámico y escalable que permita la comparación multivariante de indicadores universitarios.",
     tags: ["Visualización de Datos", "Modelado", "ETL", "BI"],
+    impactBadges: [
+      { icon: "fire", label: "Alto impacto" },
+      { icon: "chart", label: "Modelo dinámico" },
+      { icon: "target", label: "UX mejorada" }
+    ],
+    metrics: [
+      { value: "1 clic", label: "Cambio indicador" },
+      { value: "↑80%", label: "Agilidad análisis", trend: "up" }
+    ],
     context:
       "La base de datos original del Ranking de la Fundación CYD presentaba una estructura horizontal donde cada magnitud (tasa de graduación, publicaciones, etc.) ocupaba una columna distinta. Esta arquitectura impedía al usuario final alternar entre indicadores de forma ágil, obligaba a crear visualizaciones estáticas para cada métrica y hacía imposible realizar comparativas dinámicas entre universidades bajo un mismo marco de referencia.",
     approach: [
@@ -1189,6 +1351,16 @@ const PROJECTS: ProjectCase[] = [
     summary:
       "Centralizar y representar las ventas de múltiples marketplaces en un único panel de control integral usable tanto por gerencia como por managers.",
     tags: ["BI", "ETL", "Reporting"],
+    impactBadges: [
+      { icon: "chart", label: "Multi-país" },
+      { icon: "fire", label: "Tiempo real" },
+      { icon: "target", label: "Decisiones ágiles" }
+    ],
+    metrics: [
+      { value: "5", label: "Países unificados" },
+      { value: "Real-time", label: "Actualización" },
+      { value: "↓70%", label: "Tiempo decisión", trend: "down" }
+    ],
     context:
       "La dispersión de las ventas en plataformas de distintos países (Francia, UK, España, Italia, Holanda) generaba una visión fragmentada del negocio. Cada marketplace operaba con formatos de archivo propios, idiomas locales y diferentes divisas, lo que impedía una comparativa rápida de la rentabilidad global y por canal.",
     approach: [
@@ -1204,4 +1376,145 @@ const PROJECTS: ProjectCase[] = [
     ],
     Icon: FileBarChart2,
   },
-      "
+  {
+    slug: "sql-especializacion-postgresql",
+    stackSlug: "sql",
+    title: "SQL · PostgreSQL Data Analysis & Database Design",
+    subtitle: "PostgreSQL Data Analysis & Database Design",
+    summary:
+      "Especialización técnica en SQL para interactuar directamente con bases de datos corporativas, realizar consultas complejas y estructurar datos de manera eficiente para análisis avanzado.",
+    tags: ["PostgreSQL", "Data Analysis", "Database Design"],
+    impactBadges: [
+      { icon: "target", label: "Especialización" },
+      { icon: "chart", label: "Consultas avanzadas" },
+      { icon: "zap", label: "Autonomía" }
+    ],
+    metrics: [
+      { value: "100%", label: "Autonomía consultas" },
+      { value: "↓60%", label: "Tiempo reporting", trend: "down" }
+    ],
+    context:
+      "Para potenciar la capacidad de análisis y reducir la dependencia de procesos manuales, completé una trayectoria de especialización técnica enfocada en SQL. El objetivo fue adquirir las competencias necesarias para interactuar directamente con bases de datos corporativas, permitiendo realizar consultas complejas, unir múltiples fuentes de información y estructurar datos de manera eficiente para su posterior análisis.",
+    approach: [
+      "Consultas Avanzadas y Joins: Especialización en la combinación de tablas y el uso de subconsultas para responder preguntas de negocio complejas utilizando múltiples entidades de datos.",
+      "Manipulación y Procesamiento de Datos: Uso de funciones de PostgreSQL para transformar, limpiar y procesar datos directamente desde el motor de la base de datos.",
+      "Estadísticas de Resumen y Window Functions: Implementación de funciones de ventana y agregaciones avanzadas para la creación de informes analíticos y de ingeniería de datos.",
+      "Diseño de Bases de Datos: Aprendizaje de los principios de diseño para organizar y almacenar la información de forma óptima, mejorando el rendimiento y la integridad de los datos.",
+      "Análisis de Impacto Real: Aplicación de las habilidades en proyectos prácticos, como el análisis de datos históricos para ONGs, traduciendo grandes volúmenes de registros en insights accionables.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Autonomía en la Extracción de Datos: Capacidad para consultar directamente el ERP y otras bases de datos sin necesidad de intermediarios técnicos, acelerando la toma de decisiones.",
+      "Eficiencia en el Reporting: Optimización de procesos de reporte mediante el uso de SQL para pre-procesar los datos, reduciendo significativamente la carga de trabajo en herramientas de visualización como Excel o Power BI.",
+      "Calidad y Estructura: Aplicación de mejores prácticas en el diseño y organización de datos, asegurando que la información sea escalable y fácil de auditar.",
+    ],
+    Icon: Database,
+  },
+  {
+    slug: "dynamics-consultoria-migracion",
+    stackSlug: "dynamics",
+    title: "Microsoft Dynamics · Consultoría Funcional y Migración Operativa",
+    subtitle: "Consultoría Funcional y Migración Operativa",
+    summary:
+      "Transformar el repositorio documental de titulaciones en una base de datos relacional dentro del ERP, automatizando la gestión del ciclo de vida académico y el reporte institucional.",
+    tags: ["Gestión de Proyectos", "ERP", "Arquitectura de Datos", "QA"],
+    impactBadges: [
+      { icon: "fire", label: "Alto impacto" },
+      { icon: "target", label: "ERP Migration" },
+      { icon: "users", label: "Consultoría" }
+    ],
+    metrics: [
+      { value: "↓85%", label: "Tiempo reporte", trend: "down" },
+      { value: "1", label: "Fuente de verdad única" }
+    ],
+    context:
+      "El departamento de Calidad gestionaba la información crítica para la oficialización de títulos (memorias, plazas, fases administrativas) de forma descentralizada y en formatos no estructurados (PDF). Esta fragmentación impedía la trazabilidad del ciclo de vida de los títulos y convertía las tareas regulares, como el reporte anual de plazas al Ministerio, en procesos manuales lentos, propensos a errores y con nula visibilidad para el resto de la universidad.",
+    approach: [
+      "Parametrización de Información Silenciada: Liderazgo del equipo operativo en la identificación, extracción y estructuración de datos clave contenidos en documentos físicos y digitales para su migración al sistema.",
+      "Modelado Relacional de Negocio: Diseño de la lógica de datos para Dynamics, resolviendo la complejidad de entidades con diferentes granularidades: información estática del título (códigos/nombres) frente a información dinámica y recurrente (plazas anuales, históricos de modificaciones y fases de acreditación).",
+      "Gestión de Requerimientos y QA: Coordinación directa con el departamento técnico (IT) para la definición de flujos de trabajo y ejecución de pruebas funcionales por fases (UAT), asegurando que la arquitectura del ERP respondiera a las necesidades de usuario.",
+      "Democratización del Dato: Centralización de la información en el ERP, permitiendo que cualquier departamento de la universidad consulte de forma más amigable y en tiempo real el estado y los atributos de las titulaciones.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Optimización del Reporte Institucional: Reducción drástica en los tiempos de respuesta para informes recurrentes (como el reporte anual de plazas al Ministerio) gracias a la extracción directa desde el ERP.",
+      "Integridad y Trazabilidad: Eliminación de los silos de información en PDF, garantizando una \"fuente única de verdad\" para todo el ciclo de vida de las titulaciones oficiales.",
+      "Capacidad Analítica: Preparación de la infraestructura de datos necesaria para la explotación posterior mediante Dashboards de gestión, permitiendo la monitorización integral del departamento desde la base de datos corporativa.",
+    ],
+    Icon: Boxes,
+  },
+  {
+    slug: "stata-sns-pca",
+    stackSlug: "estadistica",
+    title: "Stata · Análisis Multivariante del Sistema Nacional de Salud",
+    subtitle: "Síntesis estadística avanzada para benchmarking sanitario",
+    summary:
+      "Sintetizar la complejidad de cientos de indicadores sanitarios (recursos, costes y resultados) para identificar patrones de gestión y clasificar el desempeño de las Comunidades Autónomas.",
+    tags: ["PCA", "Econometría / Estadística", "Data Cleaning"],
+    impactBadges: [
+      { icon: "chart", label: "Análisis multivariante" },
+      { icon: "target", label: "Benchmarking" },
+      { icon: "fire", label: "Cientos de indicadores" }
+    ],
+    metrics: [
+      { value: "14", label: "Años analizados" },
+      { value: "17", label: "CC.AA. comparadas" }
+    ],
+    context:
+      "El análisis del Sistema Nacional de Salud implicaba manejar una base de datos heterogénea con múltiples dimensiones: recursos estructurales (camas, alta tecnología), gasto per cápita, calidad percibida (satisfacción) y resultados de salud (esperanza de vida, reingresos). La alta dimensionalidad y la correlación entre variables hacían imposible una comparativa directa y limpia entre regiones a través de simples tablas de Excel.",
+    approach: [
+      "Consolidación de Datos (Excel): Estructuración de un dataset panel unificando series temporales (2002-2016) y normalizando variables de diversas fuentes para su ingesta en software estadístico.",
+      "Análisis de Componentes Principales (Stata): Ejecución de scripts (.do) para realizar tests de correlación (pwcorr) y reducción de dimensiones mediante PCA.",
+      "Factorización y Rotación: Uso de técnicas de rotación (Varimax) para simplificar la interpretación, agrupando variables en factores latentes explicativos.",
+      "Test de Robustez: Aplicación de pruebas y análisis de scree plots para validar matemáticamente la elección de factores principales.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Síntesis de Información Compleja: Se logró reducir una base de datos de cientos de columnas a unos pocos factores sintéticos manejables, facilitando la interpretación gerencial.",
+      "Benchmarking Objetivo: Creación de un ranking basado en evidencia estadística que permite comparar modelos de gestión sanitaria eliminando el ruido de variables individuales.",
+      "Evidencia para Políticas Públicas: Capacidad de detectar correlaciones no obvias mediante matrices de correlación robustas.",
+    ],
+    Icon: LineChart,
+  },
+  {
+    slug: "r-logit-probit-salarios",
+    stackSlug: "estadistica",
+    title: "R · Modelización de Salarios y Participación Laboral (Logit/Probit)",
+    subtitle: "Modelos econométricos para brecha salarial y probabilidad de participación laboral",
+    summary:
+      "Determinar cuantitativamente los factores que influyen en la brecha salarial y calcular la probabilidad de participación activa en el mercado laboral mediante modelos econométricos avanzados.",
+    tags: ["People Analytics", "Modelos de Elección Discreta", "Econometría con R"],
+    impactBadges: [
+      { icon: "chart", label: "Econometría" },
+      { icon: "target", label: "Modelos predictivos" },
+      { icon: "users", label: "People Analytics" }
+    ],
+    metrics: [
+      { value: "Preciso", label: "Brecha salarial cuantificada" },
+      { value: "Logit", label: "Modelo robusto" }
+    ],
+    context:
+      "Se disponía de datasets socioeconómicos con información sobre salarios, educación, género y composición familiar. El reto era doble: (1) identificar si existía discriminación salarial estadística hacia la mujer; (2) predecir la probabilidad de que una persona decida trabajar o no basándose en su entorno familiar (hijos, otros ingresos), superando las limitaciones de los modelos lineales clásicos.",
+    approach: [
+      "Regresión Lineal Múltiple: Estimación de ecuaciones de salarios (Mincer earnings function) introduciendo variables dummy de género para aislar el efecto discriminatorio y cálculo de elasticidades.",
+      "Modelado No Lineal (Logit/Probit): Al tratar una variable binaria (Trabaja: Sí/No), se descartó el Modelo Lineal de Probabilidad por sus inconsistencias (predicciones fuera del rango 0-1 y heterocedasticidad). Se implementaron modelos Logit y Probit.",
+      "Cálculo de Efectos Marginales: Transformación de los coeficientes estimados para interpretar cómo cambia la probabilidad real de trabajar ante un cambio unitario en las variables (ej: tener un hijo más).",
+      "Diagnóstico y Bondad de Ajuste: Validación de la significatividad conjunta e individual de los parámetros y evaluación del ajuste del modelo.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Detección de Discriminación: Se cuantificó la diferencia porcentual exacta de salario entre hombres y mujeres ceteris paribus (manteniendo constantes educación y experiencia).",
+      "Simulación de Escenarios: Capacidad de predecir cómo cae la probabilidad de participación laboral al pasar de 0 a 1 hijo, o de 1 a 2 hijos menores, aportando datos duros para políticas de conciliación.",
+      "Rigor Matemático: Transición de estimaciones sesgadas a modelos robustos (MCP y Máxima Verosimilitud) para corregir problemas de heterocedasticidad inherentes a los datos de encuestas.",
+    ],
+    Icon: LineChart,
+  },
+];
+
+const PROJECTS_BY_SLUG: Record<string, ProjectCase> = PROJECTS.reduce(
+  (acc, p) => {
+    acc[p.slug] = p;
+    return acc;
+  },
+  {} as Record<string, ProjectCase>,
+);
