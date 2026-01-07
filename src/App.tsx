@@ -872,7 +872,6 @@ function CasosReales({
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <h4 className="font-bold text-gray-900 leading-snug">{c.title}</h4>
-                      <p className="text-xs text-gray-500 mt-1">{c.subtitle}</p>
                     </div>
 
                     <Link
@@ -973,17 +972,22 @@ function StackTecnologico({
                       <div className="mt-3">
                         <p className="text-[11px] font-semibold text-gray-500">Casos reales</p>
                         <div className="mt-2 flex flex-wrap gap-2">
-                          {related.map((c) => (
-                            <Link
-                              key={c.slug}
-                              to={`/proyectos/${c.slug}`}
-                              className="text-xs font-semibold inline-flex items-center gap-1 hover:opacity-80 px-2 py-1 rounded-md border border-gray-200 bg-gray-50"
-                              style={{ color: primary }}
-                              title="Ver caso"
-                            >
-                              {c.title} <ExternalLink className="h-3.5 w-3.5" />
-                            </Link>
-                          ))}
+                          {related.map((c) => {
+                            const titleWithoutPrefix = c.title.includes(' · ') 
+                              ? c.title.split(' · ').slice(1).join(' · ')
+                              : c.title;
+                            return (
+                              <Link
+                                key={c.slug}
+                                to={`/proyectos/${c.slug}`}
+                                className="text-xs font-semibold inline-flex items-center gap-1 hover:opacity-80 px-2 py-1 rounded-md border border-gray-200 bg-gray-50"
+                                style={{ color: primary }}
+                                title="Ver caso"
+                              >
+                                {titleWithoutPrefix} <ExternalLink className="h-3.5 w-3.5" />
+                              </Link>
+                            );
+                          })}
                         </div>
                       </div>
                     );
