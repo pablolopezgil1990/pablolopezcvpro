@@ -61,8 +61,7 @@ function Home() {
   const [showOlderExp, setShowOlderExp] = useState(false);
 
   const primary = "#6B4C5F";
-  const cvPdfUrl =
-    "https://export-download.canva.com/ezDvU/DAGyD2ezDvU/15/0-4209103674171077762.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260104%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260104T110547Z&X-Amz-Expires=39934&X-Amz-Signature=86e86c06b4c0250b13f13e03fe3318c03f0d04edf63660d093bff8da125c89c3&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Pablo%2520L%25C3%25B3pez%2520CV%2520122025.pdf&response-expires=Sun%2C%2004%20Jan%202026%2022%3A11%3A21%20GMT";
+  const cvPdfUrl = "/pablo-lopez-gil-cv.pdf";
 
   const rootClass = useMemo(
     () =>
@@ -89,7 +88,7 @@ function Home() {
       {
         company: "NATURALEX",
         dates: "may. 2021 - nov. 2022 (1 año 7 meses)",
-        role: "Gestión y análisis de datos – Dpto. Marketplaces",
+        role: "Gestión y análisis de datos — Dpto. Marketplaces",
         bullets: [
           "Soporte interdepartamental mediante Excel, incluyendo formación y desarrollo de herramientas.",
           "Consultas SQL en coordinación con el DBA para la gestión de datos procedentes de plataformas como Amazon, Cdiscount o Mirakl.",
@@ -104,7 +103,7 @@ function Home() {
       {
         company: "Consellería de Hacienda y Modelo Económico",
         dates: "nov. 2018 - oct. 2020 (2 años)",
-        role: "Análisis de datos, estadista – Servicio de Financiación Autonómica",
+        role: "Análisis de datos, estadista — Servicio de Financiación Autonómica",
         bullets: [
           "Gestión y seguimiento de indicadores del sistema sanitario.",
           "Diseño de macros y tablas dinámicas en Excel para agilizar la extracción y explotación de datos.",
@@ -184,7 +183,6 @@ function Home() {
         desc: "La navaja suiza para el análisis avanzado. Python permite romper las limitaciones del software convencional, creando automatismos mediante bucles para tareas masivas y ejecutando estadística compleja allí donde las herramientas tradicionales no llegan.",
         Icon: Braces,
       },
-      // Ocultos por defecto ("Ver más")
       {
         slug: "vba",
         name: "VBA",
@@ -219,60 +217,6 @@ function Home() {
     [],
   );
 
-  // ==============================
-  // Mini tests (solo DEV)
-  // ==============================
-  if (typeof window !== "undefined") {
-    // @ts-expect-error - import.meta puede no existir fuera de Vite
-    const isDev =
-      typeof import.meta !== "undefined" && (import.meta as any).env?.DEV;
-    if (isDev) {
-      console.assert(experiences.length >= 2, "Debe haber al menos 2 experiencias");
-      console.assert(
-        experiences.some((e) => e.isOlder),
-        "Debe existir experiencia anterior (isOlder=true)",
-      );
-
-      console.assert(programs.length >= 3, "Debe haber al menos 3 items en Stack tecnológico");
-      console.assert(
-        new Set(programs.map((p) => p.slug)).size === programs.length,
-        "Los slugs del Stack deben ser únicos",
-      );
-      console.assert(
-        new Set(programs.map((p) => p.name)).size === programs.length,
-        "Los nombres del Stack deben ser únicos",
-      );
-      console.assert(
-        programs.every((p) => typeof p.desc === "string" && p.desc.trim().length > 0),
-        "Cada item del Stack debe tener desc",
-      );
-      console.assert(
-        programs.every((p) => typeof p.Icon === "function"),
-        "Cada item del Stack debe tener Icon",
-      );
-
-      console.assert(PROJECTS.length >= 1, "Debe haber al menos 1 caso en PROJECTS");
-      console.assert(
-        new Set(PROJECTS.map((c) => c.slug)).size === PROJECTS.length,
-        "Los slugs de PROJECTS deben ser únicos",
-      );
-      console.assert(
-        PROJECTS.every((c) => c.slug && c.title && c.subtitle && c.summary),
-        "Cada caso debe tener slug/title/subtitle/summary",
-      );
-
-      // Tests extra: consistencia entre stack y casos
-      console.assert(
-        PROJECTS.every((c) => programs.some((p) => p.slug === c.stackSlug)),
-        "Cada caso debe corresponder a un stackSlug existente en programs",
-      );
-      console.assert(
-        Object.keys(PROJECTS_BY_SLUG).length === PROJECTS.length,
-        "PROJECTS_BY_SLUG debe mapear todos los casos",
-      );
-    }
-  }
-
   return (
     <div className={rootClass}>
       <style>{`
@@ -290,7 +234,6 @@ function Home() {
       </header>
 
       <main className="max-w-md mx-auto px-4 pt-6 space-y-8 font-sans">
-        {/* Subtle animated accent */}
         <motion.div
           aria-hidden={true}
           className="pointer-events-none absolute left-1/2 top-24 -z-10 h-56 w-56 -translate-x-1/2 rounded-full blur-3xl"
@@ -311,7 +254,6 @@ function Home() {
           }
         />
 
-        {/* Hero */}
         <motion.div
           className="flex flex-col items-center text-center space-y-4"
           initial={reduceMotion ? false : { opacity: 0, y: 12 }}
@@ -328,7 +270,7 @@ function Home() {
             <img
               alt="Foto de perfil profesional de Pablo López Gil"
               className="relative w-32 h-32 object-cover rounded-full border-4 border-[#F9FAFB] shadow-xl"
-              src="https://media.licdn.com/dms/image/v2/D4D03AQFhmh9tr_t4ag/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1668192783338?e=1769040000&v=beta&t=KHZuFqPvK31hnair3JvO0pIjP5fxijzQxNP69LgZnnw"
+              src="/foto-perfil.jpg"
             />
           </div>
 
@@ -342,7 +284,6 @@ function Home() {
             </p>
           </div>
 
-          {/* Contacto */}
           <div className="flex items-center gap-3 justify-center w-full">
             <a
               className="p-3 bg-white rounded-full shadow-sm border border-gray-100 hover:scale-105 transition-transform"
@@ -384,7 +325,6 @@ function Home() {
           </p>
         </motion.div>
 
-        {/* Tabs */}
         <div className="bg-gray-100 p-1 rounded-xl flex gap-1 shadow-inner">
           <button
             type="button"
@@ -451,7 +391,6 @@ function Home() {
               exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
             >
-              {/* Experiencia */}
               <section>
                 <div className="flex items-center gap-2 mb-4">
                   <div
@@ -514,7 +453,6 @@ function Home() {
                 </button>
               </section>
 
-              {/* Formación */}
               <section>
                 <div className="flex items-center gap-2 mb-4">
                   <div
@@ -543,7 +481,7 @@ function Home() {
                           Máster en Política Económica y E. Pública
                         </h4>
                         <p className="text-xs text-gray-500 mt-1">
-                          Universidad de Valencia · 2016–2017
+                          Universidad de Valencia · 2016—2017
                         </p>
                       </div>
                     </div>
@@ -560,7 +498,7 @@ function Home() {
                           Grado en Economía
                         </h4>
                         <p className="text-xs text-gray-500 mt-1">
-                          Universidad de Valencia · 2011–2016
+                          Universidad de Valencia · 2011—2016
                         </p>
                       </div>
                     </div>
@@ -577,7 +515,7 @@ function Home() {
                           CS Administración y Finanzas
                         </h4>
                         <p className="text-xs text-gray-500 mt-1">
-                          IES Abastos · 2009–2011
+                          IES Abastos · 2009—2011
                         </p>
                       </div>
                     </div>
@@ -615,14 +553,12 @@ function Home() {
         </AnimatePresence>
       </main>
 
-      {/* Fixed CTA */}
       <div className="fixed bottom-6 left-0 right-0 px-6 max-w-md mx-auto z-40">
         <a
           className="w-full text-white font-bold py-3.5 px-4 rounded-xl shadow-lg flex items-center justify-center gap-2 transition-transform active:scale-95"
           style={{ backgroundColor: primary }}
           href={cvPdfUrl}
-          target="_blank"
-          rel="noreferrer"
+          download
           title="Descargar CV"
         >
           <Download className="h-5 w-5" />
@@ -702,7 +638,7 @@ function ProjectPage() {
           </button>
           <div className="min-w-0">
             <h1 className="text-lg font-bold text-gray-900 whitespace-normal break-words leading-snug">
-              {`${project.title.split(" · ")[0]} · ${project.subtitle}$${
+              {`${project.title.split(" · ")[0]} · ${project.subtitle}${
                 project.subtitle.trim().endsWith(".") ? "" : "."
               }`}
             </h1>
@@ -787,10 +723,6 @@ function ProjectPage() {
     </div>
   );
 }
-
-// ==============================
-// Tipos y componentes
-// ==============================
 
 type Experience = {
   company: string;
@@ -1110,10 +1042,6 @@ function StackTecnologico({
     </div>
   );
 }
-
-// ==============================
-// Datos de "Casos" (reales)
-// ==============================
 
 const PROJECTS: ProjectCase[] = [
   {
