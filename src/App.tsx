@@ -701,4 +701,503 @@ function ProjectPage() {
         <div className="flex justify-end">
           <Link
             to="/"
-            className="text-xs font-semibold inline-flex items-center gap-1 hover:opacity-80 px-2 py-1 rounded-md border border
+            className="text-xs font-semibold inline-flex items-center gap-1 hover:opacity-80 px-2 py-1 rounded-md border border-gray-200 bg-gray-50"
+            style={{ color: primary }}
+            title="Volver"
+          >
+            Volver <ExternalLink className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+type Experience = {
+  company: string;
+  dates: string;
+  role: string;
+  bullets?: string[];
+  isOlder?: boolean;
+};
+
+type Program = {
+  slug: string;
+  name: string;
+  desc: string;
+  Icon: React.ComponentType<{ className?: string }>;
+};
+
+type ProjectCase = {
+  slug: string;
+  stackSlug: string;
+  title: string;
+  subtitle: string;
+  summary: string;
+  tags?: string[];
+  context: string;
+  approach: string[];
+  impactIntro: string;
+  impact: string[];
+  Icon: React.ComponentType<{ className?: string }>;
+};
+
+function Card({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100"
+      whileHover={{ y: -2 }}
+      transition={{ type: "spring", stiffness: 260, damping: 22 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function ExperienceCard(props: Experience & { primary: string }) {
+  const { company, dates, role, bullets, primary } = props;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+    >
+      <Card>
+        <div className="flex justify-between items-start mb-2">
+          <div>
+            <h4 className="font-bold text-gray-800">{company}</h4>
+            <p className="text-xs font-semibold uppercase" style={{ color: primary }}>
+              {dates}
+            </p>
+          </div>
+        </div>
+
+        <p className="text-sm font-medium text-gray-700 mb-3">{role}</p>
+
+        {bullets?.length ? (
+          <ul className="text-xs text-gray-600 space-y-1.5 list-disc pl-4 leading-relaxed text-justify">
+            {bullets.map((b) => (
+              <li key={b}>{b}</li>
+            ))}
+          </ul>
+        ) : null}
+      </Card>
+    </motion.div>
+  );
+}
+
+function CasosReales({
+  primary,
+  cases,
+  programs,
+  selectedStack,
+  onSelectStack,
+}: {
+  primary: string;
+  cases: ProjectCase[];
+  programs: Program[];
+  selectedStack: string;
+  onSelectStack: (v: string) => void;
+}) {
+  const visibleProgramChips = useMemo(() => {
+    const hidden = new Set(["vba", "power-automate-desktop", "dynamics", "sharepoint"]);
+    return programs
+      .filter((p) => !hidden.has(p.slug))
+      .map((p) => ({ slug: p.slug, name: p.name }));
+  }, [programs]);
+
+  const filtered = useMemo(() => {
+    const s = selectedStack.trim();
+    if (!s) return cases;
+    return cases.filter((c) => c.stackSlug === s);
+  }, [cases, selectedStack]);
+
+  return (
+    <div className="space-y-6">
+      <section>
+        <div className="flex items-center gap-2 mb-4">
+          <div
+            className="p-1.5 rounded-lg"
+            style={{ backgroundColor: "rgba(107, 76, 95, 0.1)" }}
+          >
+            <FolderKanban className="h-5 w-5" style={{ color: primary }} />
+          </div>
+          <h3 className="font-bold text-lg text-gray-900">Casos reales</h3>
+        </div>
+
+        <p className="text-sm text-gray-600 mb-4">
+          Aquí agrupo mis casos para que puedas ver <b>qué hice</b>, <b>cómo lo enfoqué</b> y <b>qué impacto tuvo</b>.
+        </p>
+
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => onSelectStack("")}
+            className={
+              "px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors " +
+              (selectedStack
+                ? "bg-gray-50 border-gray-200 text-gray-600 hover:bg-white"
+                : "bg-gray-900 border-gray-900 text-white")
+            }
+            title="Ver todos"
+          >
+            Todos
+          </button>
+
+          {visibleProgramChips.map((p) => {
+            const active = selectedStack === p.slug;
+            return (
+              <button
+                key={p.slug}
+                type="button"
+                onClick={() => onSelectStack(p.slug)}
+                className={
+                  "px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors " +
+                  (active
+                    ? "text-white border-transparent"
+                    : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-white")
+                }
+                style={active ? { backgroundColor: primary } : undefined}
+                title={p.name}
+              >
+                {p.name}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="space-y-4 mt-4">
+          {filtered.map((c) => (
+            <Card key={c.slug}>
+              <div className="flex items-start gap-3">
+                <div
+                  className="shrink-0 h-10 w-10 rounded-xl flex items-center justify-center"
+                  style={{ backgroundColor: "rgba(107, 76, 95, 0.1)" }}
+                  aria-hidden={true}
+                >
+                  <c.Icon className="h-5 w-5" style={{ color: primary }} />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-gray-900 leading-snug">{c.title}</h4>
+                    </div>
+
+                    <Link
+                      to={`/proyectos/${c.slug}`}
+                      className="shrink-0 text-xs font-semibold inline-flex items-center gap-1 hover:opacity-80 px-2 py-1 rounded-md border border-gray-200 bg-gray-50"
+                      style={{ color: primary }}
+                      title="Ver caso"
+                    >
+                      Ver <ExternalLink className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+
+                  <p className="text-sm text-gray-600 mt-2 leading-relaxed">{c.summary}</p>
+
+                  {c.tags?.length ? (
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {c.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="px-2 py-1 bg-gray-100 text-gray-600 text-[10px] rounded-md font-medium"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </Card>
+          ))}
+
+          {filtered.length === 0 ? (
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5">
+              <p className="text-sm text-gray-700">No hay casos para este filtro.</p>
+            </div>
+          ) : null}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function StackTecnologico({
+  primary,
+  programs,
+}: {
+  primary: string;
+  programs: Program[];
+}) {
+  const [showMoreStack, setShowMoreStack] = useState(false);
+
+  const extraSlugs = useMemo(
+    () => new Set(["vba", "power-automate-desktop", "dynamics", "sharepoint"]),
+    [],
+  );
+
+  const mainPrograms = programs.filter((p) => !extraSlugs.has(p.slug));
+  const extraPrograms = programs.filter((p) => extraSlugs.has(p.slug));
+  const visiblePrograms = showMoreStack ? [...mainPrograms, ...extraPrograms] : mainPrograms;
+
+  return (
+    <div className="space-y-6">
+      <section>
+        <div className="flex items-center gap-2 mb-4">
+          <div
+            className="p-1.5 rounded-lg"
+            style={{ backgroundColor: "rgba(107, 76, 95, 0.1)" }}
+          >
+            <Layers className="h-5 w-5" style={{ color: primary }} />
+          </div>
+          <h3 className="font-bold text-lg text-gray-900">Stack tecnológico</h3>
+        </div>
+
+        <p className="text-sm text-gray-600 mb-4">
+          Trabajo el dato desde origen hasta destino. El método dependerá del propósito y plazo:
+        </p>
+
+        <div className="space-y-4">
+          {visiblePrograms.map(({ slug, name, desc, Icon }) => (
+            <div key={slug} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+              <div className="flex items-start gap-3">
+                <div
+                  className="shrink-0 h-10 w-10 rounded-xl flex items-center justify-center"
+                  style={{ backgroundColor: "rgba(107, 76, 95, 0.1)" }}
+                  aria-hidden={true}
+                >
+                  <Icon className="h-5 w-5" style={{ color: primary }} />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <h4 className="font-bold text-gray-900">{name}</h4>
+                  <p className="text-sm text-gray-600 mt-1 leading-relaxed">{desc}</p>
+
+                  {(() => {
+                    const related = PROJECTS.filter((c) => c.stackSlug === slug);
+                    if (!related.length) return null;
+                    return (
+                      <div className="mt-3">
+                        <p className="text-[11px] font-semibold text-gray-500">Casos reales</p>
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {related.map((c) => {
+                            const titleWithoutPrefix = c.title.includes(' · ') 
+                              ? c.title.split(' · ').slice(1).join(' · ')
+                              : c.title;
+                            return (
+                              <Link
+                                key={c.slug}
+                                to={`/proyectos/${c.slug}`}
+                                className="text-xs font-semibold inline-flex items-center gap-1 hover:opacity-80 px-2 py-1 rounded-md border border-gray-200 bg-gray-50"
+                                style={{ color: primary }}
+                                title="Ver caso"
+                              >
+                                {titleWithoutPrefix} <ExternalLink className="h-3.5 w-3.5" />
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {extraPrograms.length ? (
+          <button
+            type="button"
+            className="w-full mt-3 py-2 text-xs font-semibold flex items-center justify-center gap-1"
+            style={{ color: primary }}
+            onClick={() => setShowMoreStack((v) => !v)}
+          >
+            {showMoreStack ? "Ver menos" : `Ver más (${extraPrograms.length})`}
+            <ChevronDown
+              className={"h-4 w-4 transition-transform " + (showMoreStack ? "rotate-180" : "")}
+            />
+          </button>
+        ) : null}
+      </section>
+
+      <section>
+        <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5">
+          <p className="text-sm text-gray-700 leading-relaxed">
+            Cada herramienta está acompañada de un <b>caso real</b> (cuando aplica) para ver el detalle sin exponer datos sensibles.
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+const PROJECTS: ProjectCase[] = [
+  {
+    slug: "excel-consultoria-clima-laboral",
+    stackSlug: "excel",
+    title: "Excel · Consultoría Analítica · Auditoría de Clima Laboral (Adecco)",
+    subtitle: "Consultoría Analítica · Auditoría de Clima Laboral (Adecco)",
+    summary:
+      "Transformar las percepciones de los empleados de grandes cuentas en indicadores accionables, mediante el análisis híbrido (cuantitativo/cualitativo) de encuestas de clima.",
+    tags: ["People Analytics", "Análisis de Sentimiento", "Consultoría Estratégica"],
+    context:
+      "Como consultor autónomo para Adecco, procesaba grandes volúmenes de datos provenientes de encuestas. La información era masiva y heterogénea, combinando métricas numéricas con preguntas de respuesta abiertas. El objetivo final era entregar una hoja de ruta clara a la dirección de las empresas cliente para mejorar la retención de talento y la satisfacción interna.",
+    approach: [
+      "Estandarización de Procesos: Diseño de un ecosistema de plantillas vinculadas (Excel-Word) que permitió automatizar la transición desde los datos brutos hasta la estructura del informe final, reduciendo los tiempos de entrega y asegurando la coherencia visual y técnica.",
+      "Segmentación Multivariable Avanzada: Implementación de una matriz de tabulación para cruzar dimensiones clave: Antigüedad, Departamento, Sección y Tipo de jornada (Presencial/Otros), permitiendo granularidad total en el análisis.",
+      "Análisis Cuantitativo de Indicadores: Evaluación de bloques críticos de RR.HH. como: Liderazgo, Desarrollo y Promoción, Identidad y Compromiso, Organización, y Recursos y Tecnología.",
+      "Análisis Cualitativo y de Sentimiento: Procesamiento de respuestas abiertas mediante la clasificación de sentimientos y detección de patrones de palabras clave (frecuencia de conceptos) para identificar preocupaciones específicas no numéricas (ej. ergonomía, turnos, trato humano).",
+      "Diagnóstico Estratégico: Elaboración de informes ejecutivos que traducían los datos en \"Áreas Fuertes\" (para potenciar como marca empleadora) y \"Áreas de Mejora\" (con recomendaciones tácticas inmediatas).",
+    ],
+    impactIntro: "",
+    impact: [
+      "Eficiencia Operativa: La estandarización mediante plantillas avanzadas permitió escalar la capacidad de análisis, manejando plantillas de grandes empresas con mayor agilidad.",
+      "Insights Profundos: El análisis cualitativo permitió dar \"voz\" a los empleados, aportando matices que los números por sí solos no mostraban (ej. problemas específicos de comunicación en departamentos clave).",
+      "Soporte a la Toma de Decisiones: Los informes sirvieron como base directa para que los departamentos de RR.HH. de los clientes finales implementaran planes de acción específicos, mejorando los KPIs de clima laboral en mediciones posteriores.",
+    ],
+    Icon: FileSpreadsheet,
+  },
+  {
+    slug: "excel-control-entrada",
+    stackSlug: "excel",
+    title: "Excel · Control de entrada y estandarización para mejorar la calidad del dato",
+    subtitle: "Control de entrada y estandarización para mejorar la calidad del dato",
+    summary:
+      "Mejorar la calidad del dato mediante el control de la entrada manual, sustituyendo el registro libre por un formulario de captura estructurado.",
+    tags: ["VBA", "Formulario", "Reporting"],
+    context:
+      "En el departamento de Postventa, la ausencia de un método normalizado para registrar incidencias telefónicas generaba un conjunto de datos caótico. Al no existir restricciones en la entrada, la información era heterogénea, difícil de tabular y presentaba serias lagunas de integridad, lo que impedía cualquier análisis posterior fiable.",
+    approach: [
+      "Diseño de Interfaz de Captura: Elaboración de un formulario de entrada de datos para acotar y ordenar la información desde el origen.",
+      "Automatización mediante Macros: Implementación de lógica en VBA para procesar la información del formulario, validando campos obligatorios y volcando los datos automáticamente a una tabla maestra.",
+      "Limpieza de Arquitectura: Eliminación de campos redundantes y aplicación de reglas de negocio para asegurar que cada registro sea único y coherente.",
+      "Estandarización: Creación de una estructura de base de datos optimizada para su posterior explotación.",
+    ],
+    impactIntro:
+      'Este caso demuestra cómo la intervención en la fase de "Entrada" (Input) es crítica para asegurar el éxito del "Reporting" (Output).',
+    impact: [
+      "Eficiencia Operativa: Reducción significativa de los tiempos de registro gracias a la eliminación de redundancias y la simplificación de la interfaz.",
+      "Calidad de Información: Eliminación del ruido en los datos, garantizando que la información de postventa sea veraz y uniforme.",
+      "Capacidad Analítica: Por primera vez, el departamento cuenta con una base sólida para consolidar análisis de rendimiento, detectar patrones de fallos y generar reporting de gestión fiable.",
+    ],
+    Icon: FileSpreadsheet,
+  },
+  {
+    slug: "python-consolidacion-profesorado",
+    stackSlug: "python",
+    title: "Python · Consolidación y Armonización de Datos Históricos",
+    subtitle: "Consolidación y Armonización de Datos Históricos",
+    summary:
+      "Unificar seis años de registros de profesorado (2019-2024) en una base de datos única y coherente mediante la normalización de estructuras heterogéneas.",
+    tags: ["Reporting", "Estandarización", "Data Engineering"],
+    context:
+      "El departamento gestionaba la información del profesorado en archivos de Excel anuales con estructuras inconsistentes. A lo largo de los años, los nombres de las columnas, los tipos de datos y los criterios de registro variaron (por ejemplo, \"faculty\" frente a \"area_viu\"), lo que fragmentaba la información e impedía realizar análisis históricos de tendencias o evolución de la plantilla docente.",
+    approach: [
+      "Ingesta Multifuente: Desarrollo de un motor de carga en Python (Pandas/Openpyxl) capaz de localizar y extraer tablas dinámicas específicas (ListObjects) dentro de múltiples libros de Excel.",
+      "Canonización de Atributos: Implementación de un diccionario de mapeo (CANON) para resolver la sinonimia técnica, traduciendo variables históricas a una nomenclatura estándar común.",
+      "Normalización Algorítmica: Aplicación de limpieza automática de cabeceras mediante eliminación de tildes, conversión a snake_case y gestión de duplicados por coincidencia de mapeo.",
+      "Unificación y Reordenación: Consolidación de 39,344 registros en un dataset maestro con un orden de columnas optimizado para la lectura y explotación analítica.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Eficiencia Operativa: Automatización del proceso de unión de tablas, reduciendo el tiempo de preparación de datos de horas de trabajo manual a pocos segundos de ejecución.",
+      "Integridad de Información: Eliminación de la fragmentación de datos mediante la trazabilidad por año y la resolución de discrepancias en nombres de columnas.",
+      "Visibilidad Histórica: Creación de un repositorio completo de 70 columnas unificadas que permite, por primera vez, realizar análisis comparativos sobre doctorados, acreditaciones y cargas lectivas desde 2019 hasta 2024.",
+    ],
+    Icon: Braces,
+  },
+  {
+    slug: "python-web-scraping-competencia",
+    stackSlug: "python",
+    title: "Python · Automatización de Inteligencia Competitiva (Web Scraping)",
+    subtitle: "Automatización de Inteligencia Competitiva (Web Scraping)",
+    summary:
+      "Monitorizar dinámicamente el posicionamiento de mercado mediante la extracción automatizada de precios y catálogos de la competencia.",
+    tags: ["Web Scraping", "Pricing", "Market Intelligence", "Python Automation"],
+    context:
+      "En un entorno de mercado altamente volátil, el seguimiento de los precios de la competencia se realizaba de forma manual, lo que resultaba en una visión fragmentada, desactualizada y propensa a errores. El reto consistía en obtener datos en tiempo real de múltiples portales web externos para permitir una estrategia de precios (pricing) reactiva y basada en evidencias, sin depender de la descarga manual de catálogos.",
+    approach: [
+      "Arquitectura de Extracción: Desarrollo de scripts en Python utilizando librerías como BeautifulSoup o Selenium para navegar y parsear el contenido HTML de diversos sitios web de la competencia.",
+      "Normalización de Datos Externos: Implementación de lógica de limpieza de strings y regex para extraer valores numéricos y nombres de productos, convirtiendo datos no estructurados en una base de datos tabular limpia.",
+      "Pipeline de Actualización: Automatización del proceso para que la recogida de datos se ejecute de forma recurrente, permitiendo construir un histórico de fluctuaciones de precios.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Agilidad Comercial: Reducción del tiempo de detección de cambios de precio de la competencia de días (revisión manual) a pocos minutos (ejecución de script).",
+      "Precisión Estratégica: Eliminación de errores de transcripción manual, garantizando que las decisiones de precios de la empresa se basen en datos veraces y capturados directamente de la fuente.",
+      "Ventaja Competitiva: Capacidad para identificar tendencias de descuentos y promociones de terceros de forma proactiva, permitiendo al departamento ajustar su oferta de manera casi instantánea.",
+    ],
+    Icon: Braces,
+  },
+  {
+    slug: "python-encuestas-reporting",
+    stackSlug: "python",
+    title: "Python · Automatización de reporting masivo para encuestas",
+    subtitle: "Consolidación masiva de CSV y generación automática de informes por titulación",
+    summary:
+      "Consolidar bases de datos de gran volumen y automatizar la generación de más de 100 informes individuales de calidad docente.",
+    tags: ["Reporte", "Big Data", "Automatización"],
+    context:
+      "La gestión de encuestas de satisfacción para la acreditación de títulos requería reportar los últimos seis cursos académicos. El volumen de los archivos CSV superaba la capacidad de procesamiento de las herramientas de hoja de cálculo tradicionales, y la heterogeneidad de los datos (cambios en el orden y número de preguntas según el año) imposibilitaba una consolidación manual eficiente.",
+    approach: [
+      "Arquitectura de Consolidación: Implementación de un script en Python para la lectura y unión de bases de datos masivas, gestionando mediante lógica de programación las discrepancias estructurales entre cursos.",
+      "Transformación y Dinamización: Ejecución de procesos de limpieza y pivoting de columnas para estandarizar indicadores (tasas de participación, promedios por bloque y resultados de ítems individuales) a pesar de la evolución de los cuestionarios en el tiempo.",
+      "Automatización mediante Bucles: Programación de un sistema de generación de informes que itera sobre el dataset consolidado para exportar automáticamente resultados específicos por cada titulación.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Procesamiento de Grandes Volúmenes: Superación de las limitaciones de software convencional, haciendo posible el análisis de series históricas completas que de otro modo no se podría.",
+      "Escalabilidad y Precisión: Generación automática de más de 100 reportes individuales, eliminando el riesgo de error humano asociado al \"copy-paste\" y garantizando la trazabilidad total de las cifras.",
+      "Eficiencia Temporal: Reducción drástica de los tiempos de entrega, transformando un proceso tedioso de trabajo manual en un automatismo de ejecución inmediata.",
+    ],
+    Icon: Braces,
+  },
+  {
+    slug: "power-bi-reingenieria-ranking",
+    stackSlug: "power-bi",
+    title: "Power BI · Reingeniería de Modelo para Análisis Comparativo",
+    subtitle: "Reingeniería de Modelo para Análisis Comparativo",
+    summary:
+      "Transformar una estructura de datos plana e inflexible en un modelo dinámico y escalable que permita la comparación multivariante de indicadores universitarios.",
+    tags: ["Visualización de Datos", "Modelado", "ETL", "BI"],
+    context:
+      "La base de datos original del Ranking de la Fundación CYD presentaba una estructura horizontal donde cada magnitud (tasa de graduación, publicaciones, etc.) ocupaba una columna distinta. Esta arquitectura impedía al usuario final alternar entre indicadores de forma ágil, obligaba a crear visualizaciones estáticas para cada métrica y hacía imposible realizar comparativas dinámicas entre universidades bajo un mismo marco de referencia.",
+    approach: [
+      "Dinamización de Jerarquías (Unpivot): Reestructuración profunda del dataset mediante Power Query, transponiendo las columnas de magnitudes en un modelo de pares \"Atributo-Valor\". Esto permitió centralizar cientos de métricas en una sola dimensión filtrable.",
+      "Contextualización Estadística: Implementación de medidas DAX para calcular los valores máximos y mínimos del promedio global de la base de datos.",
+      "Diseño de Referencias Visuales: Integración en los gráficos de un margen superior e inferior sutil que actúa como \"bandas de referencia\". Esto permite que, al filtrar un grupo de universidades, se visualice inmediatamente su posición relativa respecto a los extremos de todo el ecosistema universitario.",
+      "Optimización de UX: Consolidación de múltiples páginas de informe en un único dashboard interactivo donde la selección de la magnitud redefine toda la lógica visual.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Agilidad Analítica: Reducción radical de la complejidad para el usuario, permitiendo visualizar la evolución histórica de cualquier indicador con un solo clic.",
+      "Contexto Inmediato: Mejora en la interpretación de los datos; ya no solo se observa el valor de una universidad, sino que se comprende su desempeño en comparación con el rango total (máximos y mínimos) del mercado.",
+      "Escalabilidad del Modelo: La nueva estructura permite añadir futuras ediciones del ranking o nuevas métricas sin necesidad de rediseñar los gráficos o modificar la arquitectura del informe.",
+    ],
+    Icon: FileBarChart2,
+  },
+  {
+    slug: "power-bi-marketplace",
+    stackSlug: "power-bi",
+    title: "Power BI · Dashboard Global de Ventas Marketplace",
+    subtitle: "Panel unificado para análisis global de ventas en marketplaces internacionales",
+    summary:
+      "Centralizar y representar las ventas de múltiples marketplaces en un único panel de control integral usable tanto por gerencia como por managers.",
+    tags: ["BI", "ETL", "Reporting"],
+    context:
+      "La dispersión de las ventas en plataformas de distintos países (Francia, UK, España, Italia, Holanda) generaba una visión fragmentada del negocio. Cada marketplace operaba con formatos de archivo propios, idiomas locales y diferentes divisas, lo que impedía una comparativa rápida de la rentabilidad global y por canal.",
+    approach: [
+      "Arquitectura de Conexión Híbrida: Implementación de flujos de datos mediante APIs y ERP propio, unificando orígenes heterogéneos en un modelo relacional único.",
+      "Estandarización Semántica y Multidivisa: Mapeo de categorías de producto y creación de una tabla dinámica de tipos de cambio vinculada a valores reales del mercado para convertir todas las transacciones a una moneda base (Euro) en tiempo real.",
+      "Diseño de Modelo de Datos: Estructuración del modelo para permitir un análisis multinivel, facilitando tanto la visión agregada como el detalle granular.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Reporting de Doble Perfil: Dashboard jerarquizado para ofrecer una visión estratégica a Gerencia y táctica a Managers, identificando desviaciones por marketplace y producto.",
+      "Margen de maniobra en la Toma de Decisiones: Eliminación de horas de consolidación manual, permitiendo una reacción inmediata ante cambios en el rendimiento de cualquier canal internacional.",
+      "
