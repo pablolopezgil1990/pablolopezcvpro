@@ -1200,4 +1200,8 @@ const PROJECTS: ProjectCase[] = [
     impact: [
       "Reporting de Doble Perfil: Dashboard jerarquizado para ofrecer una visión estratégica a Gerencia y táctica a Managers, identificando desviaciones por marketplace y producto.",
       "Margen de maniobra en la Toma de Decisiones: Eliminación de horas de consolidación manual, permitiendo una reacción inmediata ante cambios en el rendimiento de cualquier canal internacional.",
+      "Eficiencia Financiera: Unificación de métricas considerando distintos tipos de cambio, garantizando que el análisis de márgenes sea preciso y comparable.",
+    ],
+    Icon: FileBarChart2,
+  },
       "
