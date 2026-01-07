@@ -146,10 +146,10 @@ function Home() {
   const programs: Program[] = useMemo(
     () => [
       {
-        slug: "excel",
-        name: "Excel",
-        desc: "La herramienta universal para el prototipado de datos. A menudo subestimada, pero un valor seguro para garantizar resultados con plazos ajustados.",
-        Icon: FileSpreadsheet,
+        slug: "python",
+        name: "Python",
+        desc: "La navaja suiza para el análisis avanzado. Python permite romper las limitaciones del software convencional, creando automatismos mediante bucles para tareas masivas y ejecutando estadística compleja allí donde las herramientas tradicionales no llegan.",
+        Icon: Braces,
       },
       {
         slug: "power-query",
@@ -164,16 +164,22 @@ function Home() {
         Icon: FileBarChart2,
       },
       {
+        slug: "excel",
+        name: "Excel",
+        desc: "La herramienta universal para el prototipado de datos. A menudo subestimada, pero un valor seguro para garantizar resultados con plazos ajustados.",
+        Icon: FileSpreadsheet,
+      },
+      {
         slug: "sql",
         name: "SQL",
         desc: "Dominar SQL no es solo escribir código, es entender cómo se vertebra una base de datos. Significa identificar las Primary Keys, definir con precisión los campos, controlar la integridad de los registros, dominar la lógica de las relaciones mediante Joins y Unions, etcétera. Si el dato no es correcto en origen, no lo será en destino.",
         Icon: Database,
       },
       {
-        slug: "python",
-        name: "Python",
-        desc: "La navaja suiza para el análisis avanzado. Python permite romper las limitaciones del software convencional, creando automatismos mediante bucles para tareas masivas y ejecutando estadística compleja allí donde las herramientas tradicionales no llegan.",
-        Icon: Braces,
+        slug: "estadistica",
+        name: "Programas para estadística",
+        desc: "R / Stata / Mathematica para elaborar regresiones lineales, correlaciones, análisis de causalidad y refactorización de variables para elaborar indicadores sintéticos, etcétera.",
+        Icon: LineChart,
       },
       {
         slug: "vba",
@@ -186,12 +192,6 @@ function Home() {
         name: "Power Automate Desktop",
         desc: "Orquestación de procesos repetitivos: descargas, cargas, pasos de validación y tareas de backoffice con menos fricción y menos errores.",
         Icon: Workflow,
-      },
-      {
-        slug: "estadistica",
-        name: "Programas para estadística",
-        desc: "R / Stata / Mathematica para elaborar regresiones lineales, correlaciones, análisis de causalidad y refactorización de variables para elaborar indicadores sintéticos, etcétera.",
-        Icon: LineChart,
       },
       {
         slug: "dynamics",
@@ -545,22 +545,6 @@ function Home() {
         </AnimatePresence>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
-        <div className="max-w-md mx-auto px-4 pointer-events-auto">
-          <div className="bg-gradient-to-t from-[#F9FAFB] via-[#F9FAFB] to-transparent pt-4 pb-3">
-            <a
-              className="block w-full text-white font-semibold text-sm py-2.5 px-4 rounded-lg shadow-md text-center transition-all active:scale-95 hover:shadow-lg"
-              style={{ backgroundColor: primary }}
-              href={cvPdfUrl}
-              download="Pablo_Lopez_Gil_CV.pdf"
-              title="Descargar CV"
-            >
-              <Download className="h-4 w-4 inline-block mr-2 -mt-0.5" />
-              <span className="whitespace-nowrap">Descargar CV</span>
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
@@ -810,8 +794,10 @@ function CasosReales({
 }) {
   const visibleProgramChips = useMemo(() => {
     const hidden = new Set(["vba", "power-automate-desktop", "dynamics", "sharepoint"]);
-    return programs
-      .filter((p) => !hidden.has(p.slug))
+    const order = ["python", "power-query", "power-bi", "excel", "sql", "estadistica"];
+    return order
+      .map(slug => programs.find(p => p.slug === slug))
+      .filter((p): p is Program => p !== undefined && !hidden.has(p.slug))
       .map((p) => ({ slug: p.slug, name: p.name }));
   }, [programs]);
 
@@ -891,7 +877,6 @@ function CasosReales({
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <h4 className="font-bold text-gray-900 leading-snug">{c.title}</h4>
-                      <p className="text-xs text-gray-500 mt-1">{c.subtitle}</p>
                     </div>
 
                     <Link
@@ -1000,7 +985,7 @@ function StackTecnologico({
                               style={{ color: primary }}
                               title="Ver caso"
                             >
-                              {c.title} <ExternalLink className="h-3.5 w-3.5" />
+                              {c.title.replace(/^[^·]+·\s*/, '')} <ExternalLink className="h-3.5 w-3.5" />
                             </Link>
                           ))}
                         </div>
@@ -1041,29 +1026,51 @@ function StackTecnologico({
 
 const PROJECTS: ProjectCase[] = [
   {
-    slug: "excel-control-entrada",
-    stackSlug: "excel",
-    title: "Excel · Control de entrada y estandarización para mejorar la calidad del dato",
-    subtitle: "Control de entrada y estandarización para mejorar la calidad del dato",
+    slug: "python-encuestas-reporting",
+    stackSlug: "python",
+    title: "Python · Automatización de reporting masivo para encuestas",
+    subtitle: "Consolidación masiva de CSV y generación automática de informes por titulación",
     summary:
-      "Mejorar la calidad del dato mediante el control de la entrada manual, sustituyendo el registro libre por un formulario de captura estructurado.",
-    tags: ["VBA", "Formulario", "Reporting"],
+      "Consolidar bases de datos de gran volumen y automatizar la generación de más de 100 informes individuales de calidad docente.",
+    tags: ["Reporte", "Big Data", "Automatización"],
     context:
-      "En el departamento de Postventa, la ausencia de un método normalizado para registrar incidencias telefónicas generaba un conjunto de datos caótico. Al no existir restricciones en la entrada, la información era heterogénea, difícil de tabular y presentaba serias lagunas de integridad, lo que impedía cualquier análisis posterior fiable.",
+      "La gestión de encuestas de satisfacción para la acreditación de títulos requería reportar los últimos seis cursos académicos. El volumen de los archivos CSV superaba la capacidad de procesamiento de las herramientas de hoja de cálculo tradicionales, y la heterogeneidad de los datos (cambios en el orden y número de preguntas según el año) imposibilitaba una consolidación manual eficiente.",
     approach: [
-      "Diseño de Interfaz de Captura: Elaboración de un formulario de entrada de datos para acotar y ordenar la información desde el origen.",
-      "Automatización mediante Macros: Implementación de lógica en VBA para procesar la información del formulario, validando campos obligatorios y volcando los datos automáticamente a una tabla maestra.",
-      "Limpieza de Arquitectura: Eliminación de campos redundantes y aplicación de reglas de negocio para asegurar que cada registro sea único y coherente.",
-      "Estandarización: Creación de una estructura de base de datos optimizada para su posterior explotación.",
+      "Arquitectura de Consolidación: Implementación de un script en Python para la lectura y unión de bases de datos masivas, gestionando mediante lógica de programación las discrepancias estructurales entre cursos.",
+      "Transformación y Dinamización: Ejecución de procesos de limpieza y pivoting de columnas para estandarizar indicadores (tasas de participación, promedios por bloque y resultados de ítems individuales) a pesar de la evolución de los cuestionarios en el tiempo.",
+      "Automatización mediante Bucles: Programación de un sistema de generación de informes que itera sobre el dataset consolidado para exportar automáticamente resultados específicos por cada titulación.",
     ],
-    impactIntro:
-      'Este caso demuestra cómo la intervención en la fase de "Entrada" (Input) es crítica para asegurar el éxito del "Reporting" (Output).',
+    impactIntro: "",
     impact: [
-      "Eficiencia Operativa: Reducción significativa de los tiempos de registro gracias a la eliminación de redundancias y la simplificación de la interfaz.",
-      "Calidad de Información: Eliminación del ruido en los datos, garantizando que la información de postventa sea veraz y uniforme.",
-      "Capacidad Analítica: Por primera vez, el departamento cuenta con una base sólida para consolidar análisis de rendimiento, detectar patrones de fallos y generar reporting de gestión fiable.",
+      "Procesamiento de Grandes Volúmenes: Superación de las limitaciones de software convencional, haciendo posible el análisis de series históricas completas que de otro modo no se podría.",
+      "Escalabilidad y Precisión: Generación automática de más de 100 reportes individuales, eliminando el riesgo de error humano asociado al \"copy-paste\" y garantizando la trazabilidad total de las cifras.",
+      "Eficiencia Temporal: Reducción drástica de los tiempos de entrega, transformando un proceso tedioso de trabajo manual en un automatismo de ejecución inmediata.",
     ],
-    Icon: FileSpreadsheet,
+    Icon: Braces,
+  },
+  {
+    slug: "python-consolidacion-profesorado",
+    stackSlug: "python",
+    title: "Python · Consolidación y Armonización de Datos Históricos",
+    subtitle: "Unificación de seis años de registros mediante normalización de estructuras heterogéneas",
+    summary:
+      "Unificar seis años de registros de profesorado (2019-2024) en una base de datos única y coherente mediante la normalización de estructuras heterogéneas.",
+    tags: ["Reporting", "Estandarización", "Data Engineering"],
+    context:
+      "El departamento gestionaba la información del profesorado en archivos de Excel anuales con estructuras inconsistentes. A lo largo de los años, los nombres de las columnas, los tipos de datos y los criterios de registro variaron (por ejemplo, \"faculty\" frente a \"area_viu\"), lo que fragmentaba la información e impedía realizar análisis históricos de tendencias o evolución de la plantilla docente.",
+    approach: [
+      "Ingesta Multifuente: Desarrollo de un motor de carga en Python (Pandas/Openpyxl) capaz de localizar y extraer tablas dinámicas específicas (ListObjects) dentro de múltiples libros de Excel.",
+      "Canonización de Atributos: Implementación de un diccionario de mapeo (CANON) para resolver la sinonimia técnica, traduciendo variables históricas a una nomenclatura estándar común.",
+      "Normalización Algorítmica: Aplicación de limpieza automática de cabeceras mediante eliminación de tildes, conversión a snake_case y gestión de duplicados por coincidencia de mapeo.",
+      "Unificación y Reordenación: Consolidación de 39,344 registros en un dataset maestro con un orden de columnas optimizado para la lectura y explotación analítica.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Eficiencia Operativa: Automatización del proceso de unión de tablas, reduciendo el tiempo de preparación de datos de horas de trabajo manual a pocos segundos de ejecución.",
+      "Integridad de Información: Eliminación de la fragmentación de datos mediante la trazabilidad por año y la resolución de discrepancias en nombres de columnas.",
+      "Visibilidad Histórica: Creación de un repositorio completo de 70 columnas unificadas que permite, por primera vez, realizar análisis comparativos sobre doctorados, acreditaciones y cargas lectivas desde 2019 hasta 2024.",
+    ],
+    Icon: Braces,
   },
   {
     slug: "power-query-profesorado",
@@ -1092,29 +1099,6 @@ const PROJECTS: ProjectCase[] = [
     Icon: GitBranch,
   },
   {
-    slug: "python-encuestas-reporting",
-    stackSlug: "python",
-    title: "Python · Automatización de reporting masivo para encuestas",
-    subtitle: "Consolidación masiva de CSV y generación automática de informes por titulación",
-    summary:
-      "Consolidar bases de datos de gran volumen y automatizar la generación de más de 100 informes individuales de calidad docente.",
-    tags: ["Reporte", "Big Data", "Automatización"],
-    context:
-      "La gestión de encuestas de satisfacción para la acreditación de títulos requería reportar los últimos seis cursos académicos. El volumen de los archivos CSV superaba la capacidad de procesamiento de las herramientas de hoja de cálculo tradicionales, y la heterogeneidad de los datos (cambios en el orden y número de preguntas según el año) imposibilitaba una consolidación manual eficiente.",
-    approach: [
-      "Arquitectura de Consolidación: Implementación de un script en Python para la lectura y unión de bases de datos masivas, gestionando mediante lógica de programación las discrepancias estructurales entre cursos.",
-      "Transformación y Dinamización: Ejecución de procesos de limpieza y pivoting de columnas para estandarizar indicadores (tasas de participación, promedios por bloque y resultados de ítems individuales) a pesar de la evolución de los cuestionarios en el tiempo.",
-      "Automatización mediante Bucles: Programación de un sistema de generación de informes que itera sobre el dataset consolidado para exportar automáticamente resultados específicos por cada titulación.",
-    ],
-    impactIntro: "",
-    impact: [
-      "Procesamiento de Grandes Volúmenes: Superación de las limitaciones de software convencional, haciendo posible el análisis de series históricas completas que de otro modo no se podría.",
-      "Escalabilidad y Precisión: Generación automática de más de 100 reportes individuales, eliminando el riesgo de error humano asociado al \"copy-paste\" y garantizando la trazabilidad total de las cifras.",
-      "Eficiencia Temporal: Reducción drástica de los tiempos de entrega, transformando un proceso tedioso de trabajo manual en un automatismo de ejecución inmediata.",
-    ],
-    Icon: Braces,
-  },
-  {
     slug: "power-bi-marketplace",
     stackSlug: "power-bi",
     title: "Power BI · Dashboard Global de Ventas Marketplace",
@@ -1136,6 +1120,31 @@ const PROJECTS: ProjectCase[] = [
       "Eficiencia Financiera: Unificación de métricas considerando distintos tipos de cambio, garantizando que el análisis de márgenes sea preciso y comparable.",
     ],
     Icon: FileBarChart2,
+  },
+  {
+    slug: "excel-control-entrada",
+    stackSlug: "excel",
+    title: "Excel · Control de entrada y estandarización para mejorar la calidad del dato",
+    subtitle: "Control de entrada y estandarización para mejorar la calidad del dato",
+    summary:
+      "Mejorar la calidad del dato mediante el control de la entrada manual, sustituyendo el registro libre por un formulario de captura estructurado.",
+    tags: ["VBA", "Formulario", "Reporting"],
+    context:
+      "En el departamento de Postventa, la ausencia de un método normalizado para registrar incidencias telefónicas generaba un conjunto de datos caótico. Al no existir restricciones en la entrada, la información era heterogénea, difícil de tabular y presentaba serias lagunas de integridad, lo que impedía cualquier análisis posterior fiable.",
+    approach: [
+      "Diseño de Interfaz de Captura: Elaboración de un formulario de entrada de datos para acotar y ordenar la información desde el origen.",
+      "Automatización mediante Macros: Implementación de lógica en VBA para procesar la información del formulario, validando campos obligatorios y volcando los datos automáticamente a una tabla maestra.",
+      "Limpieza de Arquitectura: Eliminación de campos redundantes y aplicación de reglas de negocio para asegurar que cada registro sea único y coherente.",
+      "Estandarización: Creación de una estructura de base de datos optimizada para su posterior explotación.",
+    ],
+    impactIntro:
+      'Este caso demuestra cómo la intervención en la fase de "Entrada" (Input) es crítica para asegurar el éxito del "Reporting" (Output).',
+    impact: [
+      "Eficiencia Operativa: Reducción significativa de los tiempos de registro gracias a la eliminación de redundancias y la simplificación de la interfaz.",
+      "Calidad de Información: Eliminación del ruido en los datos, garantizando que la información de postventa sea veraz y uniforme.",
+      "Capacidad Analítica: Por primera vez, el departamento cuenta con una base sólida para consolidar análisis de rendimiento, detectar patrones de fallos y generar reporting de gestión fiable.",
+    ],
+    Icon: FileSpreadsheet,
   },
   {
     slug: "stata-sns-pca",
@@ -1176,6 +1185,16 @@ const PROJECTS: ProjectCase[] = [
       "Modelado No Lineal (Logit/Probit): Al tratar una variable binaria (Trabaja: Sí/No), se descartó el Modelo Lineal de Probabilidad por sus inconsistencias (predicciones fuera del rango 0-1 y heterocedasticidad). Se implementaron modelos Logit y Probit.",
       "Cálculo de Efectos Marginales: Transformación de los coeficientes estimados para interpretar cómo cambia la probabilidad real de trabajar ante un cambio unitario en las variables (ej: tener un hijo más).",
       "Diagnóstico y Bondad de Ajuste: Validación de la significatividad conjunta e individual de los parámetros y evaluación del ajuste del modelo.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Detección de Discriminación: Se cuantificó la diferencia porcentual exacta de salario entre hombres y mujeres ceteris paribus (manteniendo constantes educación y experiencia).",
+      "Simulación de Escenarios: Capacidad de predecir cómo cae la probabilidad de participación laboral al pasar de 0 a 1 hijo, o de 1 a 2 hijos menores, aportando datos duros para políticas de conciliación.",
+      "Rigor Matemático: Transición de estimaciones sesgadas a modelos robustos (MCP y Máxima Verosimilitud) para corregir problemas de heterocedasticidad inherentes a los datos de encuestas.",
+    ],
+    Icon: LineChart,
+  },
+];uste: Validación de la significatividad conjunta e individual de los parámetros y evaluación del ajuste del modelo.",
     ],
     impactIntro: "",
     impact: [
