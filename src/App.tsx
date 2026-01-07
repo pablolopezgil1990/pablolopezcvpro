@@ -330,16 +330,16 @@ function Home() {
             type="button"
             className={
               tab === "cv"
-                ? "flex-1 py-3 px-4 rounded-lg bg-white shadow-sm font-medium text-sm flex items-center justify-center gap-2 transition-all"
-                : "flex-1 py-3 px-4 rounded-lg text-gray-500 hover:text-gray-900 font-medium text-sm flex items-center justify-center gap-2 transition-all"
+                ? "flex-1 py-3 px-2 rounded-lg bg-white shadow-sm font-medium text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all"
+                : "flex-1 py-3 px-2 rounded-lg text-gray-500 hover:text-gray-900 font-medium text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all"
             }
             onClick={() => setTab("cv")}
           >
             <TrendingUp
-              className="h-4 w-4"
+              className="h-4 w-4 shrink-0"
               style={{ color: tab === "cv" ? primary : undefined }}
             />
-            <span style={tab === "cv" ? { color: primary } : {}}>
+            <span style={tab === "cv" ? { color: primary } : {}} className="whitespace-nowrap">
               Trayectoria
             </span>
           </button>
@@ -348,17 +348,17 @@ function Home() {
             type="button"
             className={
               tab === "stack"
-                ? "flex-1 py-3 px-4 rounded-lg bg-white shadow-sm font-medium text-sm flex items-center justify-center gap-2 transition-all"
-                : "flex-1 py-3 px-4 rounded-lg text-gray-500 hover:text-gray-900 font-medium text-sm flex items-center justify-center gap-2 transition-all"
+                ? "flex-1 py-3 px-2 rounded-lg bg-white shadow-sm font-medium text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all"
+                : "flex-1 py-3 px-2 rounded-lg text-gray-500 hover:text-gray-900 font-medium text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all"
             }
             onClick={() => setTab("stack")}
           >
             <Layers
-              className="h-4 w-4"
+              className="h-4 w-4 shrink-0"
               style={{ color: tab === "stack" ? primary : undefined }}
             />
-            <span style={tab === "stack" ? { color: primary } : {}}>
-              Stack tecnológico
+            <span style={tab === "stack" ? { color: primary } : {}} className="whitespace-nowrap">
+              Stack
             </span>
           </button>
 
@@ -366,17 +366,17 @@ function Home() {
             type="button"
             className={
               tab === "cases"
-                ? "flex-1 py-3 px-4 rounded-lg bg-white shadow-sm font-medium text-sm flex items-center justify-center gap-2 transition-all"
-                : "flex-1 py-3 px-4 rounded-lg text-gray-500 hover:text-gray-900 font-medium text-sm flex items-center justify-center gap-2 transition-all"
+                ? "flex-1 py-3 px-2 rounded-lg bg-white shadow-sm font-medium text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all"
+                : "flex-1 py-3 px-2 rounded-lg text-gray-500 hover:text-gray-900 font-medium text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all"
             }
             onClick={() => setTab("cases")}
           >
             <FolderKanban
-              className="h-4 w-4"
+              className="h-4 w-4 shrink-0"
               style={{ color: tab === "cases" ? primary : undefined }}
             />
-            <span style={tab === "cases" ? { color: primary } : {}}>
-              Casos reales
+            <span style={tab === "cases" ? { color: primary } : {}} className="whitespace-nowrap">
+              Casos
             </span>
           </button>
         </div>
@@ -581,6 +581,11 @@ function ProjectPage() {
     "min-h-[max(884px,100dvh)] bg-[#F9FAFB] text-[#374151] transition-colors duration-300 antialiased pb-10";
 
   const project = slug ? PROJECTS_BY_SLUG[slug] : undefined;
+
+  // Scroll to top cuando se monta el componente
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug]);
 
   if (!slug || !project) {
     return (
