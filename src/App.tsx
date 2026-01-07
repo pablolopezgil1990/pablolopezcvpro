@@ -1051,6 +1051,30 @@ const PROJECTS: ProjectCase[] = [
     Icon: FileSpreadsheet,
   },
   {
+    slug: "python-consolidacion-profesorado",
+    stackSlug: "python",
+    title: "Python · Consolidación y Armonización de Datos Históricos",
+    subtitle: "Consolidación y Armonización de Datos Históricos",
+    summary:
+      "Unificar seis años de registros de profesorado (2019-2024) en una base de datos única y coherente mediante la normalización de estructuras heterogéneas.",
+    tags: ["Reporting", "Estandarización", "Data Engineering"],
+    context:
+      "El departamento gestionaba la información del profesorado en archivos de Excel anuales con estructuras inconsistentes. A lo largo de los años, los nombres de las columnas, los tipos de datos y los criterios de registro variaron (por ejemplo, \"faculty\" frente a \"area_viu\"), lo que fragmentaba la información e impedía realizar análisis históricos de tendencias o evolución de la plantilla docente.",
+    approach: [
+      "Ingesta Multifuente: Desarrollo de un motor de carga en Python (Pandas/Openpyxl) capaz de localizar y extraer tablas dinámicas específicas (ListObjects) dentro de múltiples libros de Excel.",
+      "Canonización de Atributos: Implementación de un diccionario de mapeo (CANON) para resolver la sinonimia técnica, traduciendo variables históricas a una nomenclatura estándar común.",
+      "Normalización Algorítmica: Aplicación de limpieza automática de cabeceras mediante eliminación de tildes, conversión a snake_case y gestión de duplicados por coincidencia de mapeo.",
+      "Unificación y Reordenación: Consolidación de 39,344 registros en un dataset maestro con un orden de columnas optimizado para la lectura y explotación analítica.",
+    ],
+    impactIntro: "",
+    impact: [
+      "Eficiencia Operativa: Automatización del proceso de unión de tablas, reduciendo el tiempo de preparación de datos de horas de trabajo manual a pocos segundos de ejecución.",
+      "Integridad de Información: Eliminación de la fragmentación de datos mediante la trazabilidad por año y la resolución de discrepancias en nombres de columnas.",
+      "Visibilidad Histórica: Creación de un repositorio completo de 70 columnas unificadas que permite, por primera vez, realizar análisis comparativos sobre doctorados, acreditaciones y cargas lectivas desde 2019 hasta 2024.",
+    ],
+    Icon: Braces,
+  },
+  {
     slug: "power-query-profesorado",
     stackSlug: "power-query",
     title: "Power Query · Modelo de datos para cálculo de profesorado",
