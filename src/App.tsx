@@ -7,7 +7,6 @@ import {
   Briefcase,
   TrendingUp,
   GraduationCap,
-  Download,
   ChevronDown,
   FileSpreadsheet,
   GitBranch,
@@ -53,7 +52,6 @@ function Home() {
   const [showOlderExp, setShowOlderExp] = useState(false);
 
   const primary = "#6B4C5F";
-  const cvPdfUrl = "/pablo-lopez-gil-cv.pdf";
 
   const rootClass = useMemo(
     () =>
@@ -544,23 +542,6 @@ function Home() {
           )}
         </AnimatePresence>
       </main>
-
-      <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
-        <div className="max-w-md mx-auto px-4 pointer-events-auto">
-          <div className="bg-gradient-to-t from-[#F9FAFB] via-[#F9FAFB] to-transparent pt-4 pb-3">
-            <a
-              className="block w-full text-white font-semibold text-sm py-2.5 px-4 rounded-lg shadow-md text-center transition-all active:scale-95 hover:shadow-lg"
-              style={{ backgroundColor: primary }}
-              href={cvPdfUrl}
-              download="Pablo_Lopez_Gil_CV.pdf"
-              title="Descargar CV"
-            >
-              <Download className="h-4 w-4 inline-block mr-2 -mt-0.5" />
-              <span className="whitespace-nowrap">Descargar CV</span>
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
