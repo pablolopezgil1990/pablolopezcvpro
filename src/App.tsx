@@ -1,4 +1,4 @@
-    import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   Mail,
