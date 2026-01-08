@@ -1086,7 +1086,7 @@ const PROJECTS: ProjectCase[] = [
     subtitle: "Consultoría Analítica · Auditoría de Clima Laboral (Adecco)",
     summary:
       "Transformar las percepciones de los empleados de grandes cuentas en indicadores accionables, mediante el análisis híbrido (cuantitativo/cualitativo) de encuestas de clima.",
-    tags: ["People Analytics", "Análisis de Sentimiento", "Consultoría Estratégica"],
+    tags: ["Análisis cuantitativo", "Análisis de Sentimiento", "Consultoría Estratégica"],
     impactBadges: [
       { icon: "users", label: "People Analytics" },
       { icon: "target", label: "Consultoría" },
@@ -1406,7 +1406,7 @@ const PROJECTS: ProjectCase[] = [
     subtitle: "Modelos econométricos para brecha salarial y probabilidad de participación laboral",
     summary:
       "Determinar cuantitativamente los factores que influyen en la brecha salarial y calcular la probabilidad de participación activa en el mercado laboral mediante modelos econométricos avanzados.",
-    tags: ["People Analytics", "Modelos de Elección Discreta", "Econometría con R"],
+    tags: ["Modelos de Elección Discreta", "Econometría con R"],
     impactBadges: [
       { icon: "chart", label: "Econometría" },
       { icon: "target", label: "Modelos predictivos" },
